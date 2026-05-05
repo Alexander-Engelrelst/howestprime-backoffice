@@ -1,0 +1,12 @@
+﻿@using Howestprime.Backoffice.ViewModels
+<div class="month-nav-container">
+    <CalendarLegend/>
+    <CalendarNav NavigatorViewModel="@NavigatorViewModel" OnMonthChange="@OnMonthChange"/>
+    <div style="width: 100px;"></div> <!-- Empty div for balanced spacing -->
+</div>
+
+@code {
+    [Parameter] public NavigatorViewModel NavigatorViewModel { get; set; }
+    
+    [Parameter] public EventCallback<int> OnMonthChange { get; set; }
+}

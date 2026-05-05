@@ -3,8 +3,15 @@
 
 @rendermode InteractiveServer
 
-<h3>Planning</h3>
+<main>
+    <main class="app-content">
+        <!-- Month Navigation with Legend -->
+        <CalendarHeader NavigatorViewModel="@ViewModel.NavigatorViewModel" OnMonthChange="OnNavigateMonthAsync"/>
 
-@code {
-    
-}
+        <!-- Day-of-week Header (7 cells for Sun..Sat) -->
+        @* <DayOfWeekHeader /> *@
+
+        <!-- Actual day cells go here (dynamically, no blanks) -->
+        <div class="calendar-grid" id="calendarDays"></div>
+    </main>
+</main>

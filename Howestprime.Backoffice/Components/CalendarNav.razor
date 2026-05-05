@@ -1,0 +1,22 @@
+﻿@using Howestprime.Backoffice.ViewModels
+<div class="month-nav">
+    <button
+        class="prev-month"
+        @onclick="() => OnMonthChange.InvokeAsync(-1)"
+        disabled="@(!NavigatorViewModel.CanNavigateBack)"
+        >&larr;
+    </button>
+    <h2 class="month-year" id="monthYear">@NavigatorViewModel.SelectedDate.ToString("MMMM yyyy")</h2>
+    <button 
+        class="next-month"
+        @onclick="() => OnMonthChange.InvokeAsync(1)"
+        disabled="@(!NavigatorViewModel.CanNavigateForward)"
+        >&rarr;
+        </button>
+</div>
+
+@code {
+    [Parameter] public NavigatorViewModel NavigatorViewModel { get; set; }
+    [Parameter] public EventCallback<int> OnMonthChange { get; set; }
+
+}

@@ -16,7 +16,20 @@ public partial class Planning : ComponentBase
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
-        
+
+        await FetchNewMovies();
+    }
+    public async Task OnNavigateMonthAsync(int direction)
+    {
+        // update navigator state
+        // TODO ensure movies aren't fetched if the user tries to force navigation it doesn't work
+        ViewModel.NavigatorViewModel.Navigate(direction);
+
+        await FetchNewMovies();
+    }
+    
+    private async Task FetchNewMovies()
+    {
         FindMovieEventsForMonthRequest request = new()
         {
             Year = ViewModel.NavigatorViewModel.SelectedYear,

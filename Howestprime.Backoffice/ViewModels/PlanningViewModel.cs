@@ -6,6 +6,7 @@ namespace Howestprime.Backoffice.ViewModels;
 public class PlanningViewModel
 {
     public NavigatorViewModel NavigatorViewModel { get; private init; } = new();
+    public LegendViewModel LegendViewModel { get; private init; } = new();
     
     public Dictionary<int, DayCellViewModel> DayCellViewModels { get; private set; } = new();
     

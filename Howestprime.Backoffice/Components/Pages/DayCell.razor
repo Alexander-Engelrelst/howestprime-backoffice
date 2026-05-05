@@ -1,9 +1,13 @@
 @using Howestprime.Backoffice.ViewModels
 
-<div class="day-cell" style="grid-column-start: @(DayOfWeekIndex + 1); grid-row-start: @(RowNumber + 1);">
-    <span class="date-number">@DayNumber</span>
+<div 
+    class="day-cell @(IsPastDate ? "day-cell-past" : string.Empty)"
+    style="grid-column-start: @(DayOfWeekIndex + 1);
+        grid-row-start: @(RowNumber + 1);"
+    >
+    <span class="date-number">@Date.Day</span>
 
-    @foreach (var movieEvent in ViewModel.MovieEvents)
+    @foreach (MovieEventViewModel movieEvent in ViewModel.MovieEvents)
     {
         // TODO render info
     }
@@ -11,23 +15,27 @@
 
 @code {
     [Parameter]
-    public int DayNumber { get; set; }
+    public DateOnly Date { get; set; }
 
     [Parameter]
     public DayCellViewModel ViewModel { get; set; } = new();
 
     [Parameter]
-    public int Year { get; set; }
+    public LegendViewModel LegendViewModel { get; set; } = new();
 
-    [Parameter]
-    public int Month { get; set; }
-
-    [Parameter]
-    public int FirstDayOfMonth { get; set; }
-
-    private DayOfWeek DayOfWeek => new DateOnly(Year, Month, DayNumber).DayOfWeek;
+    private DayOfWeek DayOfWeek => Date.DayOfWeek;
 
     private int DayOfWeekIndex => (int)DayOfWeek;
 
-    private int RowNumber => (FirstDayOfMonth + (DayNumber - 1)) / 7;
+    private int RowNumber
+    {
+        get
+        {
+            DayOfWeek firstDayOfMonth = new DateOnly(Date.Year, Date.Month, 1).DayOfWeek;
+            int offset = (int)firstDayOfMonth + (Date.Day - 1);
+            return offset / 7;
+        }
+    }
+
+    private bool IsPastDate => Date < DateOnly.FromDateTime(DateTime.UtcNow);
 }

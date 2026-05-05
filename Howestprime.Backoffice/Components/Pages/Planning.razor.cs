@@ -28,6 +28,7 @@ public partial class Planning : ComponentBase
 
         if (movieEvents.IsFailure)
         {
+            // TODO also add proper handling such that if connection to the api fails there isn't a huge stack trace in the browser
             // TODO this must show an error using an overlay
             return;
         }

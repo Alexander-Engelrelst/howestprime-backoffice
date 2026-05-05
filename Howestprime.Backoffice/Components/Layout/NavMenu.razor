@@ -1,20 +1,29 @@
-﻿<div class="top-row ps-3 navbar navbar-dark">
-    <div class="container-fluid d-flex align-items-center justify-content-between">
-        <a class="navbar-brand" href="">Howestprime</a>
-        <nav class="header-nav">
-            <ul class="nav-links">
-                <li>
-                    <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                        Planning
-                    </NavLink>
-                </li>
-                <li>
-                    <NavLink class="nav-link" href="register">
-                        Register
-                    </NavLink>
-                </li>
-            </ul>
-        </nav>
-    </div>
-</div>
+﻿@inject NavigationManager NavigationManager
 
+<header class="app-header">
+    <i class="fa-solid fa-clapperboard"></i>
+    <h1>Movie Events</h1>
+    <nav class="header-nav">
+        <ul>
+            <li><a href="/" class="@(IsActive("/") ? "active" : "")">Plan</a></li>
+            <li><a href="/register" class="@(IsActive("/register") ? "active" : "")">Register</a></li>
+        </ul>
+    </nav>
+</header>
+
+@code
+{
+    private bool IsActive(string href)
+    {
+        var currentUri = new Uri(NavigationManager.Uri);
+        var currentPath = currentUri.AbsolutePath;
+
+        if (href == "/")
+        {
+            return currentPath == "/";
+        }
+
+        var normalizedHref = href.StartsWith("/") ? href : "/" + href;
+        return currentPath == normalizedHref;
+    }
+}

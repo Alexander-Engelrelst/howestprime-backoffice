@@ -109,7 +109,8 @@
 }
 
 .header-nav a.active {
-    font-weight: bold;
+    font-weight: 500;
     opacity: 1;
     text-decoration: underline;
+    text-shadow: 0.7px 0 0 currentColor;
 }

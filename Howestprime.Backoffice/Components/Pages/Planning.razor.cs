@@ -48,4 +48,6 @@ public partial class Planning : ComponentBase
         
         ViewModel.UpdateMovieEvents(movieEvents.Value!);
     }
+    
+    
 }

@@ -7,7 +7,7 @@ public class LegendViewModel
     // such that refreshing or something doesn't just change all the colors
     public Dictionary<string, string> RoomsColorMap { get; private init; }= new()
     {
-        { "Blue Room", "#ADD8E6" },
+        { "Blue Room", "#44C8F5" },
         { "Yellow Room", "#FFFF00" }
     };
 }

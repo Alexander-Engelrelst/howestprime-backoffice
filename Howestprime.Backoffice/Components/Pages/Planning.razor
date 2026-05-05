@@ -3,10 +3,11 @@
 
 @rendermode InteractiveServer
 
-<main>
-    <main class="app-content">
-        <CalendarHeader NavigatorViewModel="@ViewModel.NavigatorViewModel" OnMonthChange="OnNavigateMonthAsync"/>
-        <DaysOfWeekHeader/>
-        <div class="calendar-grid" id="calendarDays"></div>
-    </main>
+<main class="app-content">
+    <CalendarHeader NavigatorViewModel="@ViewModel.NavigatorViewModel" OnMonthChange="OnNavigateMonthAsync"/>
+    <DaysOfWeekHeader/>
+    <CalendarGrid
+        DayCellViewModels="@ViewModel.DayCellViewModels"
+        Year="@ViewModel.NavigatorViewModel.SelectedYear"
+        Month="@ViewModel.NavigatorViewModel.SelectedMonth" />
 </main>

@@ -1,0 +1,33 @@
+@using Howestprime.Backoffice.ViewModels
+
+<div class="day-cell" style="grid-column-start: @(DayOfWeekIndex + 1); grid-row-start: @(RowNumber + 1);">
+    <span class="date-number">@DayNumber</span>
+
+    @foreach (var movieEvent in ViewModel.MovieEvents)
+    {
+        // TODO render info
+    }
+</div>
+
+@code {
+    [Parameter]
+    public int DayNumber { get; set; }
+
+    [Parameter]
+    public DayCellViewModel ViewModel { get; set; } = new();
+
+    [Parameter]
+    public int Year { get; set; }
+
+    [Parameter]
+    public int Month { get; set; }
+
+    [Parameter]
+    public int FirstDayOfMonth { get; set; }
+
+    private DayOfWeek DayOfWeek => new DateOnly(Year, Month, DayNumber).DayOfWeek;
+
+    private int DayOfWeekIndex => (int)DayOfWeek;
+
+    private int RowNumber => (FirstDayOfMonth + (DayNumber - 1)) / 7;
+}

@@ -9,7 +9,7 @@ namespace Howestprime.Backoffice.Components.Pages;
 
 public partial class Planning : ComponentBase
 {
-    [Inject] 
+    [Inject]
     private IMovieEventsApiClient MovieEventsApiClient { get; set; }
     
     private PlanningViewModel ViewModel { get; init; } = new();

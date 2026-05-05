@@ -9,8 +9,6 @@ public class PlanningViewModel
     
     public Dictionary<int, DayCellViewModel> DayCellViewModels { get; private set; } = new();
     
-    // TODO if time remains this must become dynamic based on the rooms in the response of the current month
-    public LegendViewModel LegendViewModel { get; private init; } = new();
     public void UpdateMovieEvents(IReadOnlyList<MovieEvent> movieEvents)
     {
         DayCellViewModels.Clear();

@@ -4,7 +4,7 @@ namespace Howestprime.Backoffice.ViewModels;
 
 public class SchedulerOverlayViewModel
 {
-    public DateOnly? SelectedDate { get; set; }
+    public MovieEventFormViewModel Form { get; init; } = new();
     
     // TODO ask if this is allowed
     public bool IsOpen { get; set; } = false;

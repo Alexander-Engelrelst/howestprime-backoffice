@@ -74,6 +74,7 @@ public partial class Planning : ComponentBase
 
     private void OnMovieEventClickedAsync(DateOnly date)
     {
+        ViewModel.SchedulerOverlayViewModel.Form.SelectedDate = date;
         SetOverLayVisibility(true);
     }
 
@@ -86,5 +87,10 @@ public partial class Planning : ComponentBase
     private void CloseSchedulingOverlay()
     {
         SetOverLayVisibility(false);
+    }
+
+    private Task SaveMovieEventAsync(MovieEventFormViewModel formViewModel)
+    {
+        return Task.CompletedTask;
     }
 }

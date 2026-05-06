@@ -15,6 +15,10 @@
     
     @if(ViewModel.SchedulerOverlayViewModel.IsOpen)
     {
-        <SchedulingOverlay OnClose="@CloseSchedulingOverlay"/>
+        <SchedulingOverlay 
+            OverlayModel="@ViewModel.SchedulerOverlayViewModel"
+            OnClose="@CloseSchedulingOverlay"
+            OnSave="@SaveMovieEventAsync"
+            />
     }
 </main>

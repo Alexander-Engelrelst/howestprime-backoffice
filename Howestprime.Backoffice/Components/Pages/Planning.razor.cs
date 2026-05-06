@@ -20,17 +20,16 @@ public partial class Planning : ComponentBase
     {
         await base.OnInitializedAsync();
 
-        await Task.WhenAll(FetchNewMovieEvents(), FetchMovies());
+        await FetchMovieEvents();
     }
     private async Task OnNavigateMonthAsync(int direction)
     {
-        // update navigator state
         // TODO ensure movies aren't fetched if the user tries to force navigation it doesn't work
         ViewModel.NavigatorViewModel.Navigate(direction);
-        await FetchNewMovieEvents();
+        await FetchMovieEvents();
     }
     
-    private async Task FetchNewMovieEvents()
+    private async Task FetchMovieEvents()
     {
         FindMovieEventsForMonthRequest request = new()
         {
@@ -71,16 +70,25 @@ public partial class Planning : ComponentBase
         }
     }
 
-    private void OnMovieEventClickedAsync(DateOnly date)
+    private async Task OnMovieEventClicked(DateOnly date)
     {
+        if (date < DateOnly.FromDateTime(DateTime.UtcNow)) return;
+        
         ViewModel.SchedulerOverlayViewModel.Form.SelectedDate = date;
         SetOverLayVisibility(true);
+        
+        if (ViewModel.SchedulerOverlayViewModel.MustRefreshMovies)
+        {
+            ViewModel.SchedulerOverlayViewModel.IsLoading = true;
+            await FetchMovies();
+            ViewModel.SchedulerOverlayViewModel.IsLoading = false;
+        }
     }
 
     private void SetOverLayVisibility(bool visibility)
     {
+        ViewModel.SchedulerOverlayViewModel.PrepareForNewEntry();
         ViewModel.SchedulerOverlayViewModel.IsOpen = visibility;
-        StateHasChanged();
     }
     
     private void CloseSchedulingOverlay()
@@ -88,8 +96,29 @@ public partial class Planning : ComponentBase
         SetOverLayVisibility(false);
     }
 
-    private Task SaveMovieEventAsync(MovieEventFormViewModel formViewModel)
+    private async Task SaveMovieEventAsync(MovieEventFormViewModel formViewModel)
     {
-        return Task.CompletedTask;
+        ScheduleMovieEventRequest request = new()
+        {
+            // if any of these are null the formViewModel will catch this
+            MovieId = (Guid)formViewModel.MovieId!,
+            RoomId = (Guid)formViewModel.RoomId!,
+            Showtime = formViewModel.EventDateTime!.Value
+        };
+        
+        ApiResult<Created> result = await MovieEventsApiClient.ScheduleMovieEventAsync(request);
+
+        if (result.IsFailure)
+        {
+            ViewModel.SchedulerOverlayViewModel.ErrorMessage
+                = result.Error?.Detail ?? "Something went wrong";
+        }
+        else
+        {
+            // there is no route to get a single movieEvent nor does the route return the newly created event to just add it
+           await FetchMovieEvents();
+           SetOverLayVisibility(false);
+        }
+        
     }
 }

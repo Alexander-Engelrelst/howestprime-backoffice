@@ -26,4 +26,6 @@ public class PlanningViewModel
                 MovieEvents =  movieLookup[day].ToList()
             });
     }
+
+    
 }

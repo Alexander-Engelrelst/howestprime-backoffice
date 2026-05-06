@@ -22,7 +22,7 @@ public class MovieEventFormViewModel
         {
             if (SelectedDate.HasValue && ShowTime.HasValue)
             {
-                return SelectedDate.Value.ToDateTime(ShowTime.Value);
+                return SelectedDate.Value.ToDateTime(ShowTime.Value, DateTimeKind.Utc);
             }
             
             return null;

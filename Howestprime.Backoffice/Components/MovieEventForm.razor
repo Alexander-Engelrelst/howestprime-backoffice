@@ -18,6 +18,18 @@
     }
 
     <div class="form-group">
+        <label for="modalMovie">Movie</label>
+        <InputSelect id="modalMovie" @bind-Value="OverlayModel.Form.MovieId" class="form-control">
+            <option value="">-- Choose a Movie --</option>
+            @foreach (var movie in OverlayModel.Movies)
+            {
+                <option value="@movie.Key">@movie.Value</option>
+            }
+        </InputSelect>
+        <ValidationMessage For="@(() => OverlayModel.Form.MovieId)" class="text-danger" />
+    </div>
+    
+    <div class="form-group">
         <label for="modalRoom">Room</label>
         <InputSelect id="modalRoom" @bind-Value="OverlayModel.Form.RoomId" class="form-control">
             <option value="">-- Choose a Room --</option>
@@ -40,17 +52,20 @@
         </InputSelect>
         <ValidationMessage For="@(() => OverlayModel.Form.ShowTime)" class="text-danger" />
     </div>
-
+    
     <div class="form-group">
-        <label for="modalMovie">Movie</label>
-        <InputSelect id="modalMovie" @bind-Value="OverlayModel.Form.MovieId" class="form-control">
-            <option value="">-- Choose a Movie --</option>
-            @foreach (var movie in OverlayModel.Movies)
+        <label>Selected Date</label>
+        <div class="form-control-static">
+            @if (OverlayModel.Form.SelectedDate.HasValue)
             {
-                <option value="@movie.Key">@movie.Value</option>
+                @* You can format this however you like: "07 May 2026" or "2026-05-07" *@
+                <strong>@OverlayModel.Form.SelectedDate.Value.ToString("dd MMMM yyyy")</strong>
             }
-        </InputSelect>
-        <ValidationMessage For="@(() => OverlayModel.Form.MovieId)" class="text-danger" />
+            else
+            {
+                <span class="text-muted">No date selected</span>
+            }
+        </div>
     </div>
 
     <button type="submit" class="modal-submit-btn">Save Event</button>

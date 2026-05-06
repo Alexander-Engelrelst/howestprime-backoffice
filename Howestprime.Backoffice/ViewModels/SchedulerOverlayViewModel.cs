@@ -4,12 +4,12 @@ namespace Howestprime.Backoffice.ViewModels;
 
 public class SchedulerOverlayViewModel
 {
+    private const int MINUTES_BETWEEN_MOVIE_LIST_UPDATES = 5;
     public MovieEventFormViewModel Form { get; init; } = new();
     
     // TODO ask if this is allowed
     public bool IsOpen { get; set; } = false;
-    public DateTime LastMovieListUpdate { get; set; } = DateTime.MinValue;
-    
+   
     public string ErrorMessage { get; set; } = String.Empty;
     public IDictionary<Guid, string> Movies { get; init; } = new Dictionary<Guid, string>();
     
@@ -23,6 +23,12 @@ public class SchedulerOverlayViewModel
             {new Guid("019d059e-d220-75fe-b936-0a97cd75216e"), "Yellow Room"}
         };
 
+    public bool MustRefreshMovies 
+        => !LastMovieListUpdate.HasValue 
+           || DateTime.UtcNow > LastMovieListUpdate.Value.AddMinutes(MINUTES_BETWEEN_MOVIE_LIST_UPDATES);
+    public bool IsLoading { get; set; } = false;
+    private DateTime? LastMovieListUpdate { get; set; }
+
     public void UpdateMovies(MovieCollection movies)
     {
         Movies.Clear();
@@ -33,5 +39,11 @@ public class SchedulerOverlayViewModel
         }
         
         LastMovieListUpdate = DateTime.UtcNow;
+    }
+
+    public void PrepareForNewEntry()
+    {
+        ErrorMessage = String.Empty;
+        Form.MovieId = null;
     }
 }

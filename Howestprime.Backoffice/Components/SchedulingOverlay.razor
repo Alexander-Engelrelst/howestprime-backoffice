@@ -7,8 +7,17 @@
             <i class="fa-solid fa-clapperboard"></i>
             <h2>Add Movie Event</h2>
         </div>
-
-        <MovieEventForm OverlayModel="OverlayModel" OnSave="OnSave" OnClose="OnClose" />
+        
+        @if (OverlayModel.IsLoading)
+        {
+            <div class="modal-loading">
+                <p><em>Loading...</em></p>
+            </div>
+        }
+        else
+        {
+            <MovieEventForm OverlayModel="OverlayModel" OnSave="OnSave" OnClose="OnClose"/>
+        }
     </div>
 </div>
 

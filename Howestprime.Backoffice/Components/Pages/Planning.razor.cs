@@ -10,8 +10,8 @@ namespace Howestprime.Backoffice.Components.Pages;
 public partial class Planning : ComponentBase
 {
     [Inject]
-    private IMovieEventsApiClient MovieEventsApiClient { get; set; }
-    
+    private IMovieEventsApiClient MovieEventsApiClient { get; set; } = null!;
+
     private PlanningViewModel ViewModel { get; init; } = new();
     protected override async Task OnInitializedAsync()
     {
@@ -19,7 +19,7 @@ public partial class Planning : ComponentBase
 
         await FetchNewMovies();
     }
-    public async Task OnNavigateMonthAsync(int direction)
+    private async Task OnNavigateMonthAsync(int direction)
     {
         // update navigator state
         // TODO ensure movies aren't fetched if the user tries to force navigation it doesn't work
@@ -48,6 +48,9 @@ public partial class Planning : ComponentBase
         
         ViewModel.UpdateMovieEvents(movieEvents.Value!);
     }
-    
-    
+
+    private void OnMovieEventClickedAsync()
+    {
+        Console.WriteLine("click");
+    }
 }

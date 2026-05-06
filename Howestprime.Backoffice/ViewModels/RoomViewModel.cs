@@ -2,6 +2,6 @@
 
 public class RoomViewModel
 {
-    public Guid RoomId { get; set; }
-    public string RoomName { get; set; }
+    public required Guid RoomId { get; set; }
+    public required string RoomName { get; set; }
 }

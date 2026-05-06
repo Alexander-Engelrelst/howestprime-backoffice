@@ -2,8 +2,8 @@
 
 public class MovieEventViewModel
 {
-    public DateTime ShowTime { get;  set; }
-    public RoomViewModel Room { get;  set; }
+    public required DateTime ShowTime { get;  set; }
+    public required RoomViewModel Room { get;  set; }
     
-    public string MovieName { get;  set; }
+    public required string MovieName { get;  set; }
 }

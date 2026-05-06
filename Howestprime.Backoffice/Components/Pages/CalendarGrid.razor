@@ -10,22 +10,26 @@
 
         <DayCell Date="@date"
                  ViewModel="@dayViewModel"
-                 LegendViewModel="@LegendViewModel" />
+                 LegendViewModel="@LegendViewModel"
+                 OnDateClick="@OnDateClick"/>
     }
 </div>
 
 @code {
-    [Parameter]
+    [Parameter, EditorRequired]
     public IReadOnlyDictionary<int, DayCellViewModel> DayCellViewModels { get; set; } = new Dictionary<int, DayCellViewModel>();
 
-    [Parameter]
+    [Parameter, EditorRequired]
     public LegendViewModel LegendViewModel { get; set; } = new();
 
-    [Parameter]
+    [Parameter, EditorRequired]
     public int Year { get; set; }
 
-    [Parameter]
+    [Parameter, EditorRequired]
     public int Month { get; set; }
+
+    [Parameter, EditorRequired]
+    public EventCallback<DateOnly> OnDateClick { get; set; }
 
     private int DaysInMonth => DateTime.DaysInMonth(Year, Month);
 }

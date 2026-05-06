@@ -9,6 +9,8 @@ public class SchedulerOverlayViewModel
     // TODO ask if this is allowed
     public bool IsOpen { get; set; } = false;
     public DateTime LastMovieListUpdate { get; set; } = DateTime.MinValue;
+    
+    public string ErrorMessage { get; set; } = String.Empty;
     public IDictionary<Guid, string> Movies { get; init; } = new Dictionary<Guid, string>();
     
     public IList<TimeOnly> AvailableTimes { get; init; }

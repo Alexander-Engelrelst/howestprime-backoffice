@@ -12,4 +12,9 @@
         Year="@ViewModel.NavigatorViewModel.SelectedYear"
         Month="@ViewModel.NavigatorViewModel.SelectedMonth"
         OnDateClick="@OnMovieEventClickedAsync"/>
+    
+    @if(ViewModel.SchedulerOverlayViewModel.IsOpen)
+    {
+        <SchedulingOverlay OnClose="@CloseSchedulingOverlay"/>
+    }
 </main>

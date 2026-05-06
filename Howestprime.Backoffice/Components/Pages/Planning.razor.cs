@@ -11,24 +11,27 @@ public partial class Planning : ComponentBase
 {
     [Inject]
     private IMovieEventsApiClient MovieEventsApiClient { get; set; } = null!;
+    
+    [Inject]
+    private IMovieCatalogApiClient MovieCatalogApiClient { get; set; } = null!;
 
     private PlanningViewModel ViewModel { get; init; } = new();
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
 
-        await FetchNewMovies();
+        await FetchNewMovieEvents();
     }
     private async Task OnNavigateMonthAsync(int direction)
     {
         // update navigator state
         // TODO ensure movies aren't fetched if the user tries to force navigation it doesn't work
         ViewModel.NavigatorViewModel.Navigate(direction);
-
-        await FetchNewMovies();
+        
+        await Task.WhenAll(FetchNewMovieEvents(), FetchMovies());
     }
     
-    private async Task FetchNewMovies()
+    private async Task FetchNewMovieEvents()
     {
         FindMovieEventsForMonthRequest request = new()
         {
@@ -49,14 +52,39 @@ public partial class Planning : ComponentBase
         ViewModel.UpdateMovieEvents(movieEvents.Value!);
     }
 
-    private void OnMovieEventClickedAsync(DateOnly date)
+    private async Task FetchMovies()
     {
-        Console.WriteLine("test");
-        Console.WriteLine(date.ToString());
+        SearchMovieCatalogRequest request = new()
+        {
+            // TODO store this value somewhere else
+            UserRole = "Manager"
+        };
+        
+        ApiResult<MovieCollection> result = await MovieCatalogApiClient.SearchMovieCatalogAsync(request);
+
+        if (result.IsFailure)
+        {
+            ViewModel.SchedulerOverlayViewModel.ErrorMessage = "Could not fetch available movies";
+        }
+        else
+        {
+            ViewModel.SchedulerOverlayViewModel.UpdateMovies(result.Value!);
+        }
     }
 
-    private void RenderOverlay()
+    private void OnMovieEventClickedAsync(DateOnly date)
     {
-        // TODO
+        SetOverLayVisibility(true);
+    }
+
+    private void SetOverLayVisibility(bool visibility)
+    {
+        ViewModel.SchedulerOverlayViewModel.IsOpen = visibility;
+        StateHasChanged();
+    }
+    
+    private void CloseSchedulingOverlay()
+    {
+        SetOverLayVisibility(false);
     }
 }

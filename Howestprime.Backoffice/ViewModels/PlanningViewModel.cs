@@ -8,6 +8,8 @@ public class PlanningViewModel
     public NavigatorViewModel NavigatorViewModel { get; private init; } = new();
     public LegendViewModel LegendViewModel { get; private init; } = new();
     
+    public SchedulerOverlayViewModel SchedulerOverlayViewModel { get; private init; } = new();
+    
     public Dictionary<int, DayCellViewModel> DayCellViewModels { get; private set; } = new();
     
     public void UpdateMovieEvents(IReadOnlyList<MovieEvent> movieEvents)

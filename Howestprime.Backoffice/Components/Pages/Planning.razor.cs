@@ -49,8 +49,14 @@ public partial class Planning : ComponentBase
         ViewModel.UpdateMovieEvents(movieEvents.Value!);
     }
 
-    private void OnMovieEventClickedAsync()
+    private void OnMovieEventClickedAsync(DateOnly date)
     {
-        Console.WriteLine("click");
+        Console.WriteLine("test");
+        Console.WriteLine(date.ToString());
+    }
+
+    private void RenderOverlay()
+    {
+        // TODO
     }
 }

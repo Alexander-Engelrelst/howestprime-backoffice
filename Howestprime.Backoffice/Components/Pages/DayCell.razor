@@ -9,7 +9,9 @@
 
     @foreach (MovieEventViewModel movieEvent in ViewModel.MovieEvents)
     {
-        // TODO render info
+        <div class="event @GetRoomClass(movieEvent.Room.RoomName)">
+            @movieEvent.ShowTime.ToString("HH:mm") - @movieEvent.MovieName
+        </div>
     }
 </div>
 
@@ -35,6 +37,11 @@
             int offset = (int)firstDayOfMonth + (Date.Day - 1);
             return offset / 7;
         }
+    }
+    
+    private string GetRoomClass(string roomName)
+    {
+        return LegendViewModel.RoomsColorMap.TryGetValue(roomName, out string? className) ? className : string.Empty;
     }
 
     private bool IsPastDate => Date < DateOnly.FromDateTime(DateTime.UtcNow);

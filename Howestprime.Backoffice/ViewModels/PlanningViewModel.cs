@@ -14,7 +14,7 @@ public class PlanningViewModel
     {
         DayCellViewModels.Clear();
 
-        ILookup<int, MovieEventViewModel> movieLookup = movieEvents.Select(me => me.ToViewModel()).ToLookup(me => me.DateTime.Day);
+        ILookup<int, MovieEventViewModel> movieLookup = movieEvents.Select(me => me.ToViewModel()).ToLookup(me => me.ShowTime.Day);
         
         int daysInMonth = DateTime.DaysInMonth(NavigatorViewModel.SelectedYear, NavigatorViewModel.SelectedMonth);
 

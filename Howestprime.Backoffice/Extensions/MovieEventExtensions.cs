@@ -9,12 +9,13 @@ internal static class MovieEventExtensions
    {
       return new MovieEventViewModel
       {
-         DateTime = movieEvent.Showtime.DateTime, // for simplicity, we will assume everything gets done in UTC
+         ShowTime = movieEvent.Showtime.DateTime, // for simplicity, we will assume everything gets done in UTC
          Room = new RoomViewModel
          {
             RoomName = movieEvent.Room.Name,
             RoomId = movieEvent.Room.Id
-         }
+         },
+         MovieName = movieEvent.Movie.Title,
       };
    }
 }

@@ -20,15 +20,14 @@ public partial class Planning : ComponentBase
     {
         await base.OnInitializedAsync();
 
-        await FetchNewMovieEvents();
+        await Task.WhenAll(FetchNewMovieEvents(), FetchMovies());
     }
     private async Task OnNavigateMonthAsync(int direction)
     {
         // update navigator state
         // TODO ensure movies aren't fetched if the user tries to force navigation it doesn't work
         ViewModel.NavigatorViewModel.Navigate(direction);
-        
-        await Task.WhenAll(FetchNewMovieEvents(), FetchMovies());
+        await FetchNewMovieEvents();
     }
     
     private async Task FetchNewMovieEvents()
@@ -64,7 +63,7 @@ public partial class Planning : ComponentBase
 
         if (result.IsFailure)
         {
-            ViewModel.SchedulerOverlayViewModel.ErrorMessage = "Could not fetch available movies";
+            ViewModel.SchedulerOverlayViewModel.ErrorMessage = "Could not fetch available movies, contact your administrator if the issue persists.";
         }
         else
         {

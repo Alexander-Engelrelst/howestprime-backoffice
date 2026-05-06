@@ -14,7 +14,18 @@ public class MovieEventFormViewModel
     public Guid? MovieId { get; set; }
     
     [Required]
-    public TimeOnly ShowTime { get; set; }
-    
-    public DateTime? EventDateTime => SelectedDate?.ToDateTime(ShowTime) ?? null;
+    public TimeOnly? ShowTime { get; set; } // nullable to prevent rendering issues with the default value to show in the form
+
+    public DateTime? EventDateTime
+    {
+        get
+        {
+            if (SelectedDate.HasValue && ShowTime.HasValue)
+            {
+                return SelectedDate.Value.ToDateTime(ShowTime.Value);
+            }
+            
+            return null;
+        }
+    }
 }

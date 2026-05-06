@@ -6,71 +6,9 @@
         <div class="modal-header">
             <i class="fa-solid fa-clapperboard"></i>
             <h2>Add Movie Event</h2>
-            @if (OverlayModel.Form.SelectedDate.HasValue)
-            {
-                <p class="modal-subtitle">
-                    Scheduling for @OverlayModel.Form.SelectedDate.Value.ToString("dd MMMM yyyy")
-                </p>
-            }
         </div>
 
-        @* Use EditForm AS the modal-form to keep the original CSS hierarchy *@
-        <EditForm Model="OverlayModel.Form" OnValidSubmit="HandleValidSubmit" class="modal-form" id="modalForm">
-            <DataAnnotationsValidator />
-
-            @* Emergency/API Errors inside the form flow *@
-            @if (OverlayModel.Form.SelectedDate == null)
-            {
-                <div class="alert alert-warning">
-                    Something went wrong. Please try again or contact an admin.
-                </div>
-            }
-
-            @if (!string.IsNullOrEmpty(OverlayModel.ErrorMessage))
-            {
-                <div class="alert alert-danger">
-                    <i class="fa-solid fa-circle-exclamation"></i> @OverlayModel.ErrorMessage
-                </div>
-            }
-
-            <div class="form-group">
-                <label for="modalRoom">Room</label>
-                <InputSelect id="modalRoom" @bind-Value="OverlayModel.Form.RoomId" class="form-control">
-                    <option value="">-- Choose a Room --</option>
-                    @foreach (var room in OverlayModel.Rooms)
-                    {
-                        <option value="@room.Key">@room.Value</option>
-                    }
-                </InputSelect>
-                <ValidationMessage For="@(() => OverlayModel.Form.RoomId)" class="text-danger" />
-            </div>
-
-            <div class="form-group">
-                <label for="modalTime">Time</label>
-                <InputSelect id="modalTime" @bind-Value="OverlayModel.Form.ShowTime" class="form-control">
-                    <option value="">-- Choose a Time --</option>
-                    @foreach (var time in OverlayModel.AvailableTimes)
-                    {
-                        <option value="@time">@time.ToString("HH:mm")</option>
-                    }
-                </InputSelect>
-                <ValidationMessage For="@(() => OverlayModel.Form.ShowTime)" class="text-danger" />
-            </div>
-
-            <div class="form-group">
-                <label for="modalMovie">Movie</label>
-                <InputSelect id="modalMovie" @bind-Value="OverlayModel.Form.MovieId" class="form-control">
-                    <option value="">-- Choose a Movie --</option>
-                    @foreach (var movie in OverlayModel.Movies)
-                    {
-                        <option value="@movie.Key">@movie.Value</option>
-                    }
-                </InputSelect>
-                <ValidationMessage For="@(() => OverlayModel.Form.MovieId)" class="text-danger" />
-            </div>
-
-            <button type="submit" class="modal-submit-btn">Save Event</button>
-        </EditForm>
+        <MovieEventForm OverlayModel="OverlayModel" OnSave="OnSave" OnClose="OnClose" />
     </div>
 </div>
 
@@ -82,12 +20,6 @@
     [Parameter, EditorRequired]
     public EventCallback OnClose { get; set; }
 
-    [Parameter]
+    [Parameter, EditorRequired]
     public EventCallback<MovieEventFormViewModel> OnSave { get; set; }
-
-    private async Task HandleValidSubmit()
-    {
-        // Pass the form data back to the parent for API processing
-        await OnSave.InvokeAsync(OverlayModel.Form);
-    }
 }

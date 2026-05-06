@@ -1,3 +1,13 @@
+html {
+  /* Keep the space for the scrollbar reserved at all times 
+   * prevents jittering upon opening the overlay */
+  scrollbar-gutter: stable;
+}
+
+body:has(.modal-overlay) {
+  overflow: hidden;
+}
+
 .calendar-grid {
   display: grid;
   grid-template-columns: repeat(7, 1fr);

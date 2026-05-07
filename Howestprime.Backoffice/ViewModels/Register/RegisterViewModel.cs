@@ -2,5 +2,6 @@
 
 public class RegisterViewModel
 {
-    
+    public string ErrorMessage { get; set; } = string.Empty;
+    public bool? SuccessFullyRegistered { get; set; } = null;
 }

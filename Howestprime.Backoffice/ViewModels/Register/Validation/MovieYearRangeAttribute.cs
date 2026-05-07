@@ -46,8 +46,7 @@ public class MovieYearRangeAttribute : ValidationAttribute
         if (year < MinYear || year > currentYear + _maxYearsAhead)
         {
             string errorMessage = ErrorMessage ?? $"{validationContext.DisplayName} must be between {MinYear} and {currentYear + _maxYearsAhead}.";
-            return new ValidationResult(errorMessage);
-        }
+            return new ValidationResult(errorMessage, new[] { validationContext.MemberName! });        }
 
         return ValidationResult.Success;
     }

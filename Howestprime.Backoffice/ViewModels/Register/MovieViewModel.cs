@@ -16,7 +16,6 @@ public class MovieViewModel
     [Display(Name = "Release Year")]
     [MovieYearRange(2)]
     public int ReleaseYear { get; set; }
-    
     [Required(ErrorMessage = "Please fill in the release date")]
     [Range(1, int.MaxValue, ErrorMessage = "Please enter a valid duration in minutes (must be at least 1).")]
     public int Duration { get; set; }

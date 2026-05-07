@@ -1,0 +1,24 @@
+﻿@page "/"
+@using Microsoft.AspNetCore.Mvc.RazorPages
+
+@rendermode InteractiveServer
+
+<main class="app-content">
+    <CalendarHeader NavigatorViewModel="@ViewModel.NavigatorViewModel" OnMonthChange="OnNavigateMonthAsync"/>
+    <DaysOfWeekHeader/>
+    <CalendarGrid
+        DayCellViewModels="@ViewModel.DayCellViewModels"
+        LegendViewModel="@ViewModel.LegendViewModel"
+        Year="@ViewModel.NavigatorViewModel.SelectedYear"
+        Month="@ViewModel.NavigatorViewModel.SelectedMonth"
+        OnDateClick="@OnMovieEventClicked"/>
+    
+    @if(ViewModel.SchedulerOverlayViewModel.IsOpen)
+    {
+        <SchedulingOverlay 
+            OverlayModel="@ViewModel.SchedulerOverlayViewModel"
+            OnClose="@CloseSchedulingOverlay"
+            OnSave="@SaveMovieEventAsync"
+            />
+    }
+</main>

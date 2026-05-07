@@ -1,23 +1,29 @@
-﻿<div class="top-row ps-3 navbar navbar-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="">Howestprime</a>
-    </div>
-</div>
+﻿@inject NavigationManager NavigationManager
 
-<input type="checkbox" title="Navigation menu" class="navbar-toggler" />
-
-<div class="nav-scrollable" onclick="document.querySelector('.navbar-toggler').click()">
-    <nav class="flex-column">
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Planning
-            </NavLink>
-
-             <NavLink class="nav-link" href="register">
-                <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Register
-            </NavLink>
-            
-        </div>
+<header class="app-header">
+    <i class="fa-solid fa-clapperboard"></i>
+    <h1>Movie Events</h1>
+    <nav class="header-nav">
+        <ul>
+            <li><a href="/" class="@(IsActive("/") ? "active" : "")">Plan</a></li>
+            <li><a href="/register" class="@(IsActive("/register") ? "active" : "")">Register</a></li>
+        </ul>
     </nav>
-</div>
+</header>
 
+@code
+{
+    private bool IsActive(string href)
+    {
+        var currentUri = new Uri(NavigationManager.Uri);
+        var currentPath = currentUri.AbsolutePath;
+
+        if (href == "/")
+        {
+            return currentPath == "/";
+        }
+
+        var normalizedHref = href.StartsWith("/") ? href : "/" + href;
+        return currentPath == normalizedHref;
+    }
+}

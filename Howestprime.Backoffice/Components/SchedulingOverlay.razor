@@ -1,0 +1,34 @@
+﻿@using Howestprime.Backoffice.ViewModels
+<div class="modal-overlay" id="addEventModal" @onclick="OnClose">
+    @* The modal-content MUST be here to keep the white box styling *@
+    <div class="modal-content" @onclick:stopPropagation="true">
+        
+        <div class="modal-header">
+            <i class="fa-solid fa-clapperboard"></i>
+            <h2>Add Movie Event</h2>
+        </div>
+        
+        @if (OverlayModel.IsLoading)
+        {
+            <div class="modal-loading">
+                <p><em>Loading...</em></p>
+            </div>
+        }
+        else
+        {
+            <MovieEventForm OverlayModel="OverlayModel" OnSave="OnSave" OnClose="OnClose"/>
+        }
+    </div>
+</div>
+
+@code
+{
+    [Parameter, EditorRequired]
+    public SchedulerOverlayViewModel OverlayModel { get; set; } = null!;
+
+    [Parameter, EditorRequired]
+    public EventCallback OnClose { get; set; }
+
+    [Parameter, EditorRequired]
+    public EventCallback<MovieEventFormViewModel> OnSave { get; set; }
+}

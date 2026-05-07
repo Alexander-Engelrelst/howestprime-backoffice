@@ -129,10 +129,12 @@
 
 .room-legend-blue {
   background-color: var(--color-primary);
+  color: var(--color-text-light);
 }
 
 .room-legend-yellow {
   background-color: var(--color-accent);
+  color: var(--color-text-dark);
 }
 
 .event {

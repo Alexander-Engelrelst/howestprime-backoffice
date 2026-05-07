@@ -1,3 +1,13 @@
+html {
+  /* Keep the space for the scrollbar reserved at all times 
+   * prevents jittering upon opening the overlay */
+  scrollbar-gutter: stable;
+}
+
+body:has(.modal-overlay) {
+  overflow: hidden;
+}
+
 .calendar-grid {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
@@ -30,6 +40,18 @@
   transform: translateY(-2px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   border-color: var(--color-primary);
+}
+
+.day-cell-past {
+    background-color: #f5f5f5;
+    color: #999;
+    cursor: not-allowed; /* Shows the "Ø" symbol on hover */
+    opacity: 0.7;
+}
+
+.day-cell:not(.day-cell-past):hover {
+    background-color: #eef2ff;
+    cursor: pointer;
 }
 
 .disabled-day {
@@ -113,10 +135,20 @@
 
 .room-legend-blue {
   background-color: var(--color-primary);
+  color: var(--color-text-light);
 }
 
 .room-legend-yellow {
   background-color: var(--color-accent);
+  color: var(--color-text-dark);
+}
+
+.event.room-legend-blue {
+  color: var(--color-text-light);
+}
+
+.event.room-legend-yellow {
+  color: var(--color-text-dark);
 }
 
 .event {

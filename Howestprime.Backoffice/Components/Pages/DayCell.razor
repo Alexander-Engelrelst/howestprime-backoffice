@@ -1,0 +1,59 @@
+@using Howestprime.Backoffice.ViewModels
+
+<div 
+    class="day-cell @(IsPastDate ? "day-cell-past" : string.Empty)"
+    style="grid-column-start: @(DayOfWeekIndex + 1);
+        grid-row-start: @(RowNumber + 1);"
+    @onclick="HandleClick"
+    >
+    <span class="date-number">@Date.Day</span>
+
+    @foreach (MovieEventViewModel movieEvent in ViewModel.MovieEvents)
+    {
+        <div class="event @GetRoomClass(movieEvent.Room.RoomName)">
+            @movieEvent.ShowTime.ToString("HH:mm") - @movieEvent.MovieName
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter, EditorRequired]
+    public DateOnly Date { get; set; }
+
+    [Parameter, EditorRequired]
+    public DayCellViewModel ViewModel { get; set; } = new();
+
+    [Parameter, EditorRequired]
+    public LegendViewModel LegendViewModel { get; set; } = new();
+
+    [Parameter, EditorRequired]
+    public EventCallback<DateOnly> OnDateClick { get; set; }
+    
+    private DayOfWeek DayOfWeek => Date.DayOfWeek;
+
+    private int DayOfWeekIndex => (int)DayOfWeek;
+
+    private int RowNumber
+    {
+        get
+        {
+            DayOfWeek firstDayOfMonth = new DateOnly(Date.Year, Date.Month, 1).DayOfWeek;
+            int offset = (int)firstDayOfMonth + (Date.Day - 1);
+            return offset / 7;
+        }
+    }
+    
+    private string GetRoomClass(string roomName)
+    {
+        return LegendViewModel.RoomsColorMap.TryGetValue(roomName, out string? className) ? className : string.Empty;
+    }
+
+    private bool IsPastDate => Date < DateOnly.FromDateTime(DateTime.UtcNow);
+    
+    private void HandleClick()
+    {
+        if (IsPastDate) return;
+        
+        OnDateClick.InvokeAsync(Date);
+    }
+}

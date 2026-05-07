@@ -1,0 +1,35 @@
+@using Howestprime.Backoffice.ViewModels
+
+<div class="calendar-grid">
+    @foreach (int day in Enumerable.Range(1, DaysInMonth))
+    {
+        DateOnly date = new DateOnly(Year, Month, day);
+        DayCellViewModel dayViewModel = DayCellViewModels.TryGetValue(day, out var value)
+            ? value
+            : new DayCellViewModel();
+
+        <DayCell Date="@date"
+                 ViewModel="@dayViewModel"
+                 LegendViewModel="@LegendViewModel"
+                 OnDateClick="@OnDateClick"/>
+    }
+</div>
+
+@code {
+    [Parameter, EditorRequired]
+    public IReadOnlyDictionary<int, DayCellViewModel> DayCellViewModels { get; set; } = new Dictionary<int, DayCellViewModel>();
+
+    [Parameter, EditorRequired]
+    public LegendViewModel LegendViewModel { get; set; } = new();
+
+    [Parameter, EditorRequired]
+    public int Year { get; set; }
+
+    [Parameter, EditorRequired]
+    public int Month { get; set; }
+
+    [Parameter, EditorRequired]
+    public EventCallback<DateOnly> OnDateClick { get; set; }
+
+    private int DaysInMonth => DateTime.DaysInMonth(Year, Month);
+}

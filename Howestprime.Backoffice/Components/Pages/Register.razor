@@ -150,29 +150,7 @@
         </div>
         
         @* Preview Section *@
-        <div class="col-lg-4 mt-4 mt-lg-0">
-            <div class="card shadow-sm sticky-top" style="top: 20px;">
-                <div class="card-header bg-dark text-white fw-bold text-center">
-                    Poster Preview
-                </div>
-                <div class="card-body d-flex flex-column align-items-center justify-content-center bg-secondary-subtle" style="min-height: 400px;">
-                    @if (!string.IsNullOrWhiteSpace(FormViewModel.PosterUrl))
-                    {
-                        <img src="@FormViewModel.PosterUrl"
-                             alt="Movie Poster Preview"
-                             class="img-fluid rounded shadow"
-                             style="max-height: 450px; object-fit: contain;"/>
-                    }
-                    else
-                    {
-                        <div class="text-muted text-center">
-                            <i class="bi bi-image" style="font-size: 3rem;"></i>
-                            <p>No URL provided</p>
-                        </div>
-                    }
-                </div>
-            </div>
-        </div>
+        <FormPreview Url="@FormViewModel.PosterUrl"/>
     </div>
 </div>
 

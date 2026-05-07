@@ -1,6 +1,105 @@
 ﻿@page "/Register"
-<h3>Register</h3>
+
+@using Howestprime.Backoffice.ViewModels.Register
+<EditForm Model="@Movie" OnValidSubmit="HandleValidSubmit" class="p-4 border rounded bg-light">
+    <DataAnnotationsValidator />
+
+    <div class="row g-3">
+        @* Title *@
+        <div class="col-md-8">
+            <label class="form-label fw-bold">Movie Title</label>
+            <InputText @bind-Value="Movie.Title" class="form-control" placeholder="e.g. Inception" />
+            <ValidationMessage For="@(() => Movie.Title)" />
+        </div>
+
+        @* Release Year - Uses your Custom Attribute! *@
+        <div class="col-md-4">
+            <label class="form-label fw-bold">Release Year</label>
+            <InputNumber @bind-Value="Movie.ReleaseYear" class="form-control" />
+            <ValidationMessage For="@(() => Movie.ReleaseYear)" />
+        </div>
+
+        @* Poster URL *@
+        <div class="col-12">
+            <label class="form-label fw-bold">Poster URL</label>
+            <InputText @bind-Value="Movie.PosterUrl" class="form-control" placeholder="https://..." />
+            <ValidationMessage For="@(() => Movie.PosterUrl)" />
+        </div>
+
+        @* Description - Using the TextArea as requested *@
+        <div class="col-12">
+            <label class="form-label fw-bold">Description</label>
+            <InputTextArea @bind-Value="Movie.Description" class="form-control" rows="4" 
+                           placeholder="Enter a brief summary of the movie..." />
+            <ValidationMessage For="@(() => Movie.Description)" />
+        </div>
+
+        @* Genres Section *@
+        <div class="col-md-6">
+            <label class="form-label fw-bold">Genres</label>
+            <div class="input-group mb-2">
+                <input type="text" class="form-control" @bind="tempGenre" placeholder="Add genre..." />
+                <button type="button" class="btn btn-outline-secondary" @onclick="AddGenre">Add</button>
+            </div>
+            <ValidationMessage For="@(() => Movie.Genres)" />
+            
+            <div class="d-flex flex-wrap gap-2">
+                @foreach (var genre in Movie.Genres)
+                {
+                    <span class="badge rounded-pill bg-primary">
+                        @genre 
+                        <button type="button" class="btn-close btn-close-white ms-2" style="font-size: 0.5rem" @onclick="() => Movie.Genres.Remove(genre)"></button>
+                    </span>
+                }
+            </div>
+        </div>
+
+        @* Actors Section *@
+        <div class="col-md-6">
+            <label class="form-label fw-bold">Actors</label>
+            <div class="input-group mb-2">
+                <input type="text" class="form-control" @bind="tempActor" placeholder="Add actor..." />
+                <button type="button" class="btn btn-outline-secondary" @onclick="AddActor">Add</button>
+            </div>
+            <ValidationMessage For="@(() => Movie.Actors)" />
+
+            <div class="d-flex flex-wrap gap-2">
+                @foreach (var actor in Movie.Actors)
+                {
+                    <span class="badge rounded-pill bg-dark">
+                        @actor 
+                        <button type="button" class="btn-close btn-close-white ms-2" style="font-size: 0.5rem" @onclick="() => Movie.Actors.Remove(actor)"></button>
+                    </span>
+                }
+            </div>
+        </div>
+
+        @* Submit Button *@
+        <div class="col-12 text-end mt-4">
+            <button type="submit" class="btn btn-success btn-lg px-5">Register Movie</button>
+        </div>
+    </div>
+</EditForm>
 
 @code {
+    [Parameter] public MovieViewModel Movie { get; set; } = new();
     
+    private string tempGenre = "";
+    private string tempActor = "";
+
+    private void AddGenre() 
+    { 
+        if (!string.IsNullOrWhiteSpace(tempGenre)) { Movie.Genres.Add(tempGenre.Trim()); tempGenre = ""; } 
+    }
+
+    private void AddActor() 
+    { 
+        if (!string.IsNullOrWhiteSpace(tempActor)) { Movie.Actors.Add(tempActor.Trim()); tempActor = ""; } 
+    }
+
+    private void HandleValidSubmit()
+    {
+        // Handle your logic here!
+        Console.WriteLine("Movie successfully validated and submitted!");
+    }
 }

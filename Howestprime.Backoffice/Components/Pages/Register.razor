@@ -1,105 +1,160 @@
 ﻿@page "/Register"
-
 @using Howestprime.Backoffice.ViewModels.Register
-<EditForm Model="@Movie" OnValidSubmit="HandleValidSubmit" class="p-4 border rounded bg-light">
-    <DataAnnotationsValidator />
+@rendermode InteractiveServer
 
-    <div class="row g-3">
-        @* Title *@
-        <div class="col-md-8">
-            <label class="form-label fw-bold">Movie Title</label>
-            <InputText @bind-Value="Movie.Title" class="form-control" placeholder="e.g. Inception" />
-            <ValidationMessage For="@(() => Movie.Title)" />
-        </div>
+<div class="container mt-5">
+    <EditForm Model="@Movie" OnValidSubmit="HandleValidSubmit" class="p-4 border rounded shadow-sm bg-light">
+        <DataAnnotationsValidator />
 
-        @* Release Year - Uses your Custom Attribute! *@
-        <div class="col-md-4">
-            <label class="form-label fw-bold">Release Year</label>
-            <InputNumber @bind-Value="Movie.ReleaseYear" class="form-control" />
-            <ValidationMessage For="@(() => Movie.ReleaseYear)" />
-        </div>
-
-        @* Poster URL *@
-        <div class="col-12">
-            <label class="form-label fw-bold">Poster URL</label>
-            <InputText @bind-Value="Movie.PosterUrl" class="form-control" placeholder="https://..." />
-            <ValidationMessage For="@(() => Movie.PosterUrl)" />
-        </div>
-
-        @* Description - Using the TextArea as requested *@
-        <div class="col-12">
-            <label class="form-label fw-bold">Description</label>
-            <InputTextArea @bind-Value="Movie.Description" class="form-control" rows="4" 
-                           placeholder="Enter a brief summary of the movie..." />
-            <ValidationMessage For="@(() => Movie.Description)" />
-        </div>
-
-        @* Genres Section *@
-        <div class="col-md-6">
-            <label class="form-label fw-bold">Genres</label>
-            <div class="input-group mb-2">
-                <input type="text" class="form-control" @bind="tempGenre" placeholder="Add genre..." />
-                <button type="button" class="btn btn-outline-secondary" @onclick="AddGenre">Add</button>
+        <div class="row g-3">
+            @* Title *@
+            <div class="col-md-8">
+                <label for="movieTitle" class="form-label fw-bold">Movie Title</label>
+                <InputText id="movieTitle" @bind-Value="Movie.Title" class="form-control" placeholder="e.g. Inception" />
+                <ValidationMessage For="@(() => Movie.Title)" />
             </div>
-            <ValidationMessage For="@(() => Movie.Genres)" />
+
+            @* Release Year *@
+            <div class="col-md-4">
+                <label for="releaseYear" class="form-label fw-bold">Release Year</label>
+                <InputNumber id="releaseYear" @bind-Value="Movie.ReleaseYear" class="form-control" />
+                <ValidationMessage For="@(() => Movie.ReleaseYear)" />
+            </div>
+
+            @* Poster URL *@
+            <div class="col-12">
+                <label for="posterUrl" class="form-label fw-bold">Poster URL</label>
+                <InputText id="posterUrl" @bind-Value="Movie.PosterUrl" class="form-control" placeholder="https://..." />
+                <ValidationMessage For="@(() => Movie.PosterUrl)" />
+            </div>
+
+            @* Description *@
+            <div class="col-12">
+                <label for="description" class="form-label fw-bold">Description</label>
+                <InputTextArea id="description" @bind-Value="Movie.Description" class="form-control" rows="4" 
+                               placeholder="Enter a brief summary of the movie..." />
+                <ValidationMessage For="@(() => Movie.Description)" />
+            </div>
+
+            @* Actors Section *@
+            <div class="col-md-6">
+                <label for="actorInput" class="form-label fw-bold">Actors</label>
+                <div class="input-group mb-2">
+                    <input type="text" 
+                           class="form-control" 
+                           placeholder="Add actor..." 
+                           @bind-value="_tempActor"
+                           @bind-value:event="oninput"
+                           id="actorInput"
+                           @onkeydown="HandleActorKeyDown"/>
+           
+                    <button type="button" 
+                            class="btn btn-outline-secondary" 
+                            @onclick="TryAddActor">
+                        Add
+                    </button>
+                </div>
+                <ValidationMessage For="@(() => Movie.Actors)" />
+
+                <div class="d-flex flex-wrap gap-2" >
+                    @foreach (var actor in Movie.Actors)
+                    {
+                        <span class="badge rounded-pill bg-dark d-flex align-items-center p-2 text-break text-wrap" >
+                            @actor 
+                            <button 
+                                type="button" 
+                                class="btn-close btn-close-white ms-2" 
+                                style="font-size: 0.5rem" 
+                                aria-label="Remove" 
+                                @onclick="() => Movie.Actors.Remove(actor)"></button>
+                        </span>
+                    }
+                </div>
+            </div>
             
-            <div class="d-flex flex-wrap gap-2">
-                @foreach (var genre in Movie.Genres)
-                {
-                    <span class="badge rounded-pill bg-primary">
-                        @genre 
-                        <button type="button" class="btn-close btn-close-white ms-2" style="font-size: 0.5rem" @onclick="() => Movie.Genres.Remove(genre)"></button>
-                    </span>
-                }
+            @* Genres Section *@
+            <div class="col-md-6">
+                <label for="genreInput" class="form-label fw-bold">Genres</label>
+                <div class="input-group mb-2">
+                    <input type="text" 
+                           class="form-control" 
+                           placeholder="Add genre..." 
+                           @bind-value="_tempGenre" 
+                           @bind-value:event="oninput"
+                           id="genreInput"
+                           @onkeydown="HandleGenreKeyDown"/>
+           
+                    <button type="button" 
+                            class="btn btn-outline-secondary" 
+                            @onclick="TryAddGenre">
+                        Add
+                    </button>
+                </div>
+                <ValidationMessage For="@(() => Movie.Genres)" />
+                
+                <div class="d-flex flex-wrap gap-2">
+                    @foreach (var genre in Movie.Genres)
+                    {
+                        <span class="badge rounded-pill bg-primary d-flex align-items-center p-2 text-break text-wrap">
+                            @genre 
+                            <button 
+                                type="button" 
+                                class="btn-close btn-close-white ms-2"
+                                style="font-size: 0.5rem"
+                                aria-label="Remove" 
+                                @onclick="() => Movie.Genres.Remove(genre)"></button>
+                        </span>
+                    }
+                </div>
+            </div>
+
+            @* Submit Button *@
+            <div class="col-12 text-end mt-4 border-top pt-3">
+                @* we cannot allow both enter to work for adding actors/genres and for submission
+                 * without adding a needless amount of complexity which isn't worth it *@
+                <button type="button" class="btn btn-success btn-lg px-5" @onclick="HandleValidSubmit">Register Movie</button>
             </div>
         </div>
-
-        @* Actors Section *@
-        <div class="col-md-6">
-            <label class="form-label fw-bold">Actors</label>
-            <div class="input-group mb-2">
-                <input type="text" class="form-control" @bind="tempActor" placeholder="Add actor..." />
-                <button type="button" class="btn btn-outline-secondary" @onclick="AddActor">Add</button>
-            </div>
-            <ValidationMessage For="@(() => Movie.Actors)" />
-
-            <div class="d-flex flex-wrap gap-2">
-                @foreach (var actor in Movie.Actors)
-                {
-                    <span class="badge rounded-pill bg-dark">
-                        @actor 
-                        <button type="button" class="btn-close btn-close-white ms-2" style="font-size: 0.5rem" @onclick="() => Movie.Actors.Remove(actor)"></button>
-                    </span>
-                }
-            </div>
-        </div>
-
-        @* Submit Button *@
-        <div class="col-12 text-end mt-4">
-            <button type="submit" class="btn btn-success btn-lg px-5">Register Movie</button>
-        </div>
-    </div>
-</EditForm>
+    </EditForm>
+</div>
 
 @code {
     [Parameter] public MovieViewModel Movie { get; set; } = new();
     
-    private string tempGenre = "";
-    private string tempActor = "";
-
-    private void AddGenre() 
+    private string _tempGenre = "";
+    private string _tempActor = "";
+    
+    private void TryAddGenre() 
     { 
-        if (!string.IsNullOrWhiteSpace(tempGenre)) { Movie.Genres.Add(tempGenre.Trim()); tempGenre = ""; } 
+        if (!string.IsNullOrWhiteSpace(_tempGenre))
+        {
+            Movie.Genres.Add(_tempGenre.Trim()); 
+            _tempGenre = ""; 
+        } 
     }
 
-    private void AddActor() 
+    private void TryAddActor() 
     { 
-        if (!string.IsNullOrWhiteSpace(tempActor)) { Movie.Actors.Add(tempActor.Trim()); tempActor = ""; } 
+        if (!string.IsNullOrWhiteSpace(_tempActor)) 
+        { 
+            Movie.Actors.Add(_tempActor.Trim()); 
+            _tempActor = ""; 
+        } 
+    }
+
+    private void HandleGenreKeyDown(KeyboardEventArgs e)
+    {
+        if (e.Key == "Enter") TryAddGenre();
+    }
+    
+    private void HandleActorKeyDown(KeyboardEventArgs e)
+    {
+        if (e.Key == "Enter") TryAddActor();
     }
 
     private void HandleValidSubmit()
     {
-        // Handle your logic here!
-        Console.WriteLine("Movie successfully validated and submitted!");
+        // This only runs if all DataAnnotations (including your custom Year attribute) pass!
+        Console.WriteLine($"Movie '{Movie.Title}' is valid and ready for the database.");
     }
 }

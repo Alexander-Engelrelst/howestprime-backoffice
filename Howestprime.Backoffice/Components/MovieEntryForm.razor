@@ -1,0 +1,182 @@
+﻿@using Howestprime.Backoffice.ViewModels
+
+<div class="register-main-row">
+    @if(EditContext is null)
+    {
+        <p><em>Loading...</em></p>
+    } 
+    else if (!string.IsNullOrWhiteSpace(ViewModel.CriticalErrorMessage))
+    {
+        <div class="register-alert register-alert-danger" role="alert">
+            @ViewModel.CriticalErrorMessage
+        </div>
+    }
+    else
+    {
+
+        <div class="register-main-col">
+            <EditForm class="register-form-container"
+                      EditContext="EditContext">
+                <DataAnnotationsValidator/>
+
+                <div class="register-form-row">
+                    @* Title *@
+                    <div class="register-col-8">
+                        <label for="movieTitle" class="register-form-label">Movie Title</label>
+                        <InputText
+                            id="movieTitle"
+                            @bind-Value="ViewModel.FormDataViewModel.Title"
+                            class="register-form-control"
+                            placeholder="e.g. Inception"/>
+                        <ValidationMessage For="@(() => ViewModel.FormDataViewModel.Title)"/>
+                    </div>
+
+                    @* Release Year *@
+                    <div class="register-col-4">
+                        <label for="releaseYear" class="register-form-label">Release Year</label>
+                        <InputNumber
+                            id="releaseYear"
+                            @bind-Value="ViewModel.FormDataViewModel.ReleaseYear"
+                            class="register-form-control"/>
+                        <ValidationMessage For="@(() => ViewModel.FormDataViewModel.ReleaseYear)"/>
+                    </div>
+
+                    @* Poster URL *@
+                    <div class="">
+                        <label for="posterUrl" class="register-form-label">Poster URL</label>
+                        <InputText
+                            id="posterUrl"
+                            @bind-Value="ViewModel.FormDataViewModel.PosterUrl"
+                            class="register-form-control" placeholder="https://..."/>
+                        <ValidationMessage For="@(() => ViewModel.FormDataViewModel.PosterUrl)"/>
+                    </div>
+
+                    @* Description *@
+                    <div class="">
+                        <label for="description" class="register-form-label">Description</label>
+                        <InputTextArea
+                            id="description"
+                            @bind-Value="ViewModel.FormDataViewModel.Description"
+                            class="register-form-control"
+                            rows="4"
+                            placeholder="Enter a brief summary of the movie..."/>
+                        <ValidationMessage For="@(() => ViewModel.FormDataViewModel.Description)"/>
+                    </div>
+
+                    @* Duration *@
+                    <div class="register-form-row">
+                        <div class="register-col-6">
+                            <label for="duration" class="register-form-label">Duration (minutes)</label>
+                            <InputNumber
+                                id="duration"
+                                @bind-Value="ViewModel.FormDataViewModel.Duration"
+                                class="register-form-control"
+                                placeholder="e.g. 120"/>
+                            <ValidationMessage For="@(() => ViewModel.FormDataViewModel.Duration)"/>
+                        </div>
+
+                        @* Age rating *@
+                        <div class="register-col-6">
+                            <label for="ageRating" class="register-form-label">Age Rating</label>
+                            <InputNumber
+                                id="ageRating"
+                                @bind-Value="ViewModel.FormDataViewModel.AgeRating"
+                                class="register-form-control"
+                                placeholder="0-18"/>
+                            <ValidationMessage For="@(() => ViewModel.FormDataViewModel.AgeRating)"/>
+                        </div>
+                    </div>
+
+                    @* Actors Section *@
+                    <NonEmptyStringSetInput Label="Actors"
+                                            InputId="actorInput"
+                                            Placeholder="Add actor..."
+                                            Items="@ViewModel.FormDataViewModel.Actors"
+                                            For="@(() => ViewModel.FormDataViewModel.Actors)"
+                                            BadgeClass="register-badge-dark"
+                                            @ref="_actorInput"/>
+
+                    @* Genres Section *@
+                    <NonEmptyStringSetInput Label="Genres"
+                                            InputId="genreInput"
+                                            Placeholder="Add genre..."
+                                            Items="@ViewModel.FormDataViewModel.Genres"
+                                            For="@(() => ViewModel.FormDataViewModel.Genres)"
+                                            BadgeClass="register-badge-primary"
+                                            @ref="_genreInput"/>
+
+                    @* Submit Button & API Feedback *@
+                    <div class="register-actions-container register-actions-flex">
+                        @if (CancelUrlRoute != null)
+                        {
+                            <a href="@CancelUrlRoute" class="cancel-link btn">Cancel</a>
+                        }
+
+
+                        @if (ViewModel.SuccessFullySaved.HasValue && ViewModel.SuccessFullySaved.Value)
+                        {
+                            <div class="register-alert register-alert-success" role="alert">
+                                @SuccessMessage
+                            </div>
+
+                        }
+                        else if (!string.IsNullOrWhiteSpace(ViewModel.ErrorMessage))
+                        {
+                            <div class="register-alert register-alert-danger" role="alert">
+                                @ViewModel.ErrorMessage
+                            </div>
+                        }
+
+                        @* We don't allow submission using a submit button since it is impossible without using javascript 
+                         * in the browser to prevent default only when enter is pressed and only in certain scenarios.
+                         * It is a deliberate choice to prefer allowing the usage of enter for adding genres/actors
+                         * as opposed to allowing the usage of enter for submission.
+                         * Dynamically preventing default on the form is unreliable and would mean that we would have to 
+                         * manually add characters everywhere which would be needlessly complex for the small ux gain *@
+                        <button type="button" class="submit-button" @onclick="ProcessSubmit">
+                            @SubmitButtonText
+                        </button>
+                    </div>
+                </div>
+            </EditForm>
+        </div>
+
+        @* Preview Section *@
+        <PosterPreview Url="@ViewModel.FormDataViewModel.PosterUrl"/>
+    }
+</div>
+@code {
+    private NonEmptyStringSetInput _actorInput = null!;
+    private NonEmptyStringSetInput _genreInput = null!;
+    
+    [Parameter, EditorRequired]
+    public MovieFormViewModel ViewModel { get; set; }
+    
+    [Parameter, EditorRequired]
+    public EventCallback HandleManualSubmit { get; set; }
+
+    // must be nullable to not have issues with race conditions when the form data must be preloaded
+    [Parameter, EditorRequired] 
+    public EditContext? EditContext { get; set; }
+
+    [Parameter]
+    public string? CancelUrlRoute { get; set; }
+    
+    [Parameter, EditorRequired]
+    public string SubmitButtonText { get; set; }
+    
+    [Parameter, EditorRequired]
+    public string SuccessMessage { get; set; }
+    
+
+    private async Task ProcessSubmit()
+    {
+        await HandleManualSubmit.InvokeAsync();
+
+        if (ViewModel.SuccessFullySaved.HasValue && ViewModel.SuccessFullySaved.Value)
+        {
+            _actorInput.Clear();
+            _genreInput.Clear();
+        }
+    }
+}

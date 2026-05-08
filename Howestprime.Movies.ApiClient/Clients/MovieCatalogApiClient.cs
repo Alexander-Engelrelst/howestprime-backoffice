@@ -18,6 +18,16 @@ public sealed class MovieCatalogApiClient(HttpClient httpClient, JsonSerializerO
 
         return SendForCreatedAsync(message, ct);
     }
+    
+    public Task<ApiResult<Created>> UpdateMovieAsync(UpdateMovieRequest request, CancellationToken ct = default)
+    {
+        ArgumentNullException.ThrowIfNull(request);
+
+        var message = CreateRequest(HttpMethod.Put, $"api/movie-catalog/{request.MovieId}");
+        SetJsonBody(message, request);
+
+        return SendForCreatedAsync(message, ct);
+    }
 
     public Task<ApiResult<MovieCollection>> SearchMovieCatalogAsync(SearchMovieCatalogRequest request, CancellationToken ct = default)
     {
@@ -30,8 +40,21 @@ public sealed class MovieCatalogApiClient(HttpClient httpClient, JsonSerializerO
             ("genres", request.Genres));
 
         var message = CreateRequest(HttpMethod.Get, path);
-        AddRequiredHeader(message, "x-user-role", request.UserRole);
+        AddRequiredHeader(message, "X-user-role", request.UserRole);
 
         return SendForJsonAsync<MovieCollection>(message, ct);
+    }
+
+    public Task<ApiResult<Movie>> FindMovieByIdAsync(FindMovieByIdRequest request, CancellationToken ct = default)
+    {
+        ArgumentNullException.ThrowIfNull(request);
+        EnsureNotBlank(request.UserRole, nameof(request.UserRole));
+        
+        string path = $"api/movie-catalog/{request.MovieId.ToString()}";
+        
+        HttpRequestMessage message = CreateRequest(HttpMethod.Get, path);
+        AddRequiredHeader(message, "x-user-role", request.UserRole);
+        
+        return SendForJsonAsync<Movie>(message, ct);
     }
 }

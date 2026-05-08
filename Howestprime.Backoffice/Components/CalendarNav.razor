@@ -16,7 +16,9 @@
 </div>
 
 @code {
-    [Parameter] public NavigatorViewModel NavigatorViewModel { get; set; }
-    [Parameter] public EventCallback<int> OnMonthChange { get; set; }
+    [Parameter, EditorRequired]
+    public NavigatorViewModel NavigatorViewModel { get; set; }
+    [Parameter, EditorRequired]
+    public EventCallback<int> OnMonthChange { get; set; }
 
 }

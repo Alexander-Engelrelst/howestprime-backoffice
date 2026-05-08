@@ -7,6 +7,7 @@
         <ul>
             <li><a href="/" class="@(IsActive("/") ? "active" : "")">Plan</a></li>
             <li><a href="/register" class="@(IsActive("/register") ? "active" : "")">Register</a></li>
+            <li><a href="/catalog" class="@(IsActive("/catalog") ? "active" : "")">Catalog</a></li>
         </ul>
     </nav>
 </header>
@@ -15,15 +16,15 @@
 {
     private bool IsActive(string href)
     {
-        var currentUri = new Uri(NavigationManager.Uri);
-        var currentPath = currentUri.AbsolutePath;
+        string relativePath = NavigationManager.ToBaseRelativePath(NavigationManager.Uri);
+        string current = relativePath.Trim('/').ToLower();
+        string target = href.Trim('/').ToLower();
 
-        if (href == "/")
+        if (string.IsNullOrEmpty(target))
         {
-            return currentPath == "/";
+            return string.IsNullOrWhiteSpace(current);
         }
-
-        var normalizedHref = href.StartsWith("/") ? href : "/" + href;
-        return currentPath == normalizedHref;
+        
+        return current.StartsWith(target);
     }
 }

@@ -1,6 +1,9 @@
-﻿@page "/Register"
-<h3>Register</h3>
+﻿@page "/register"
+@rendermode InteractiveServer
 
-@code {
-    
-}
+<MovieEntryForm 
+    ViewModel="ViewModel"
+    HandleManualSubmit="HandleManualSubmit"
+    EditContext="EditContext"
+    SubmitButtonText="REGISTER MOVIE" 
+    SuccessMessage="Movie registered successfully!" />

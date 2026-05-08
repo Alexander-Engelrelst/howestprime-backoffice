@@ -1,0 +1,47 @@
+﻿@page "/catalog"
+@using Howestprime.Backoffice.ViewModels.Catalog
+
+@if(ViewModel.IsLoading)
+{
+    <p><em>Loading...</em></p>
+}
+else if (ViewModel.ErrorMessage is not null)
+{
+    <div class="alert alert-danger" role="alert">
+        @ViewModel.ErrorMessage
+    </div>
+}
+else if (!ViewModel.Movies.Any())
+{
+    <div class="alert alert-info" role="alert">
+        No movies found in the catalog.
+    </div>
+}
+else
+{
+    <section class="movie-grid">
+        @for (int i = 0; i < ViewModel.Movies.Count; i++)
+        {
+            CatalogMovieViewModel movieViewModel = ViewModel.Movies[i];
+            bool loadImageEagerly = i < MOVIE_EAGER_LOAD_THRESHOLD;
+            
+            <article class="movie-card">
+                <div class="movie-poster">
+                    <img 
+                        src="@movieViewModel.PosterUrl"
+                        alt="Poster for @movieViewModel.Title" 
+                        loading="@(loadImageEagerly ? "eager" : "lazy")"/>
+                </div>
+
+                <div class="movie-content">
+                    <h3 class="movie-title">@movieViewModel.Title</h3>
+                    <time class="movie-year">@movieViewModel.ReleaseYear</time>
+
+                    <a href="/catalog/@movieViewModel.Id/edit" class="edit-link">
+                        Edit Movie
+                    </a>
+                </div>
+            </article>
+        }
+    </section>
+}

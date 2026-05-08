@@ -44,30 +44,19 @@
   text-align: right;
 }
 
-/* Submit button customization */
-.submit-button {
-  background-color: var(--color-secondary);
-  color: var(--color-text-light);
-  padding: var(--spacing-md) var(--spacing-xl);
-  font-weight: bold;
-  text-transform: uppercase;
-}
-
-.cancel-link {
+.btn.cancel-link, .cancel-link {
     margin-right: auto;
     color: var(--color-text-light);
     text-decoration: none;
-    padding: var(--spacing-md) var(--spacing-xl);
     font-weight: bold;
     text-transform: uppercase;
     background-color: var(--color-secondary);
     border: 1px solid var(--color-border);
     border-radius: var(--radius-md, 4px);
-    display: inline-block;
     transition: background-color 0.2s ease-in-out;
 }
 
-.cancel-link:hover {
+.btn.cancel-link:hover, .cancel-link:hover {
     background-color: hsl(from var(--color-secondary) h s calc(l * 0.8));
     color: var(--color-text-light);
     text-decoration: none;

@@ -22,14 +22,14 @@
                 </div>
 
                 @* Poster URL *@
-                <div class="register-col-12">
+                <div class="">
                     <label for="posterUrl" class="register-form-label">Poster URL</label>
                     <InputText id="posterUrl" @bind-Value="FormViewModel.PosterUrl" class="register-form-control" placeholder="https://..."/>
                     <ValidationMessage For="@(() => FormViewModel.PosterUrl)"/>
                 </div>
 
                 @* Description *@
-                <div class="register-col-12">
+                <div class="">
                     <label for="description" class="register-form-label">Description</label>
                     <InputTextArea id="description" @bind-Value="FormViewModel.Description" class="register-form-control" rows="4"
                                    placeholder="Enter a brief summary of the movie..."/>
@@ -69,10 +69,10 @@
                               BadgeClass="register-badge-primary"/>
 
                 @* Submit Button & API Feedback *@
-                <div class="register-col-12 register-actions-container register-actions-flex">
+                <div class="register-actions-container register-actions-flex">
                     @if (CancelUrlRoute != null)
                     {
-                        <a href="@CancelUrlRoute" class="cancel-link">Cancel</a>
+                        <a href="@CancelUrlRoute" class="cancel-link btn">Cancel</a>
                     }
                     
                     
@@ -120,8 +120,11 @@
     [Parameter, EditorRequired] 
     public EditContext EditContext { get; set; } = null!;
 
-    [Parameter] 
+    [Parameter]
     public string? CancelUrlRoute { get; set; }
+    
+    [Parameter, EditorRequired]
+    public string SubmitButtonText { get; set; }
     
     private MovieViewModel FormViewModel => ViewModel.FormViewModel;
 }

@@ -36,5 +36,7 @@ public partial class Catalog : ComponentBase
         {
             ViewModel.UpdateMovies(result.Value!);
         }
+        
+        ViewModel.IsLoading = false;
     }
 }

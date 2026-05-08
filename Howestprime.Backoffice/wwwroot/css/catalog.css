@@ -1,0 +1,75 @@
+/* 1. The Container */
+.movie-grid {
+    display: grid;
+    /* auto-fill: fits as many as possible
+       minmax(15rem, 1fr): Each card is at least 15rem wide, 
+       but will expand to fill remaining space equally. */
+    grid-template-columns: repeat(auto-fill, minmax(13rem, 1fr));
+
+    /* Use rem for consistent spacing relative to text size */
+    gap: 1.5rem;
+    width: 100%;
+    padding: 1rem;
+    box-sizing: border-box;
+}
+
+/* 2. The Card */
+.movie-card {
+    /* Reset default block behavior */
+    display: flex;
+    flex-direction: column;
+
+    background: #fff;
+    border: 0.0625rem solid #ddd; /* Tiny relative border */
+    border-radius: 0.5rem;
+    overflow: hidden;
+    height: 100%;
+}
+
+/* 3. The Poster */
+.movie-poster {
+    /* Maintains 2:3 ratio regardless of width */
+    aspect-ratio: 2 / 3;
+    width: 100%;
+}
+
+.movie-poster img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* 4. Content */
+.movie-content {
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.movie-title {
+    font-size: 1.25rem;
+    margin: 0;
+    /* Keeps the layout stable even with long titles */
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.movie-year {
+    color: #666;
+    margin: 0.5rem 0 1rem 0;
+    font-size: 0.9rem;
+}
+
+.edit-link {
+    margin-top: auto;
+    background: #111;
+    color: #fff;
+    text-decoration: none;
+    text-align: center;
+    padding: 0.75rem;
+    border-radius: 0.25rem;
+}

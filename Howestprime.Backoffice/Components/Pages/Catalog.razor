@@ -1,6 +1,43 @@
 ﻿@page "/catalog"
-<h3>Catalog</h3>
 
-@code {
-    
+@rendermode InteractiveServer
+
+@if(ViewModel.IsLoading)
+{
+    <p><em>Loading...</em></p>
+}
+else if (ViewModel.ErrorMessage is not null)
+{
+    <div class="alert alert-danger" role="alert">
+        @ViewModel.ErrorMessage
+    </div>
+}
+else if (!ViewModel.Movies.Any())
+{
+    <div class="alert alert-info" role="alert">
+        No movies found in the catalog.
+    </div>
+}
+else
+{
+    <article class="movie-grid">
+        @foreach (var movie in ViewModel.Movies)
+        {
+            <div class="movie-card">
+                <div class="movie-poster">
+                    <img src="@movie.PosterUrl" alt="Poster for @movie.Title" loading="lazy" />
+                </div>
+            
+                <div class="movie-content">
+                    <h3 class="movie-title">@movie.Title</h3>
+                    <time class="movie-year">@movie.ReleaseYear</time>
+                
+                    <a href="/movies/edit/@movie.Id" class="edit-link">
+                        Edit Movie
+                    </a>
+                </div>
+            </div>
+        }
+    </article>
+
 }

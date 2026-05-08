@@ -7,6 +7,7 @@ public class CatalogViewModel
     public IReadOnlyList<CatalogMovieViewModel> Movies { get; set; } = [];
     public string? ErrorMessage { get; set; }
 
+    public bool IsLoading { get; set; } = true;
     public void UpdateMovies(MovieCollection movies)
     {
         Movies = movies.Data.Select(m => new CatalogMovieViewModel

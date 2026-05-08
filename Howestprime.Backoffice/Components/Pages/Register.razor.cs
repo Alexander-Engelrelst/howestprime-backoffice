@@ -15,21 +15,20 @@ public partial class Register : ComponentBase
     [Inject]
     private IMovieCatalogApiClient MovieCatalogApiClient { get; set; } = null!;
     
-    private MovieViewModel FormViewModel { get; set; } = new();
     private RegisterViewModel ViewModel { get; set; }= new();
     
-    private EditContext? _editContext;
+    private EditContext? EditContext { get; set; }
 
     private bool SubmissionPending { get; set; } = false;
     protected override void OnInitialized()
     {
-        _editContext = new EditContext(FormViewModel);
+        EditContext = new EditContext(ViewModel.FormViewModel);
     }
     
     private async Task HandleManualSubmit()
     {
         SubmissionPending = true;
-        bool isValid = _editContext?.Validate() ?? false;
+        bool isValid = EditContext?.Validate() ?? false;
 
         if (isValid)
         {
@@ -38,7 +37,7 @@ public partial class Register : ComponentBase
         }
         else
         {
-            _editContext?.NotifyValidationStateChanged();
+            EditContext?.NotifyValidationStateChanged();
             ViewModel.SuccessFullyRegistered = false;
             ViewModel.ErrorMessage = "Please fix the errors before submitting.";
             SubmissionPending = false;
@@ -48,14 +47,14 @@ public partial class Register : ComponentBase
     {
         RegisterMovieRequest request = new()
         {
-            Title = FormViewModel.Title,
-            Description = FormViewModel.Description,
-            ReleaseYear = FormViewModel.ReleaseYear,
-            PosterUrl = FormViewModel.PosterUrl,
-            Duration = FormViewModel.Duration,
-            AgeRating = FormViewModel.AgeRating,
-            Genres = FormViewModel.Genres.ToList(),
-            Actors = FormViewModel.Actors.ToList()
+            Title = ViewModel.FormViewModel.Title,
+            Description = ViewModel.FormViewModel.Description,
+            ReleaseYear = ViewModel.FormViewModel.ReleaseYear,
+            PosterUrl = ViewModel.FormViewModel.PosterUrl,
+            Duration = ViewModel.FormViewModel.Duration,
+            AgeRating = ViewModel.FormViewModel.AgeRating,
+            Genres = ViewModel.FormViewModel.Genres.ToList(),
+            Actors = ViewModel.FormViewModel.Actors.ToList()
         };
         
         ApiResult<Created> response = await MovieCatalogApiClient.RegisterMovieAsync(request);
@@ -64,7 +63,7 @@ public partial class Register : ComponentBase
         {
             ViewModel.SuccessFullyRegistered = true;
             ViewModel.ErrorMessage = string.Empty;
-            FormViewModel = new();
+            ViewModel.FormViewModel = new();
         }
         else
         {

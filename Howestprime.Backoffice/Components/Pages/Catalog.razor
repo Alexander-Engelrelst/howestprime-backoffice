@@ -1,8 +1,6 @@
 ﻿@page "/catalog"
 @using Howestprime.Backoffice.ViewModels.Catalog
 
-@rendermode InteractiveServer
-
 @if(ViewModel.IsLoading)
 {
     <p><em>Loading...</em></p>
@@ -29,14 +27,17 @@ else
             
             <article class="movie-card">
                 <div class="movie-poster">
-                    <img src="@movieViewModel.PosterUrl" alt="Poster for @movieViewModel.Title" loading="lazy"/>
+                    <img 
+                        src="@movieViewModel.PosterUrl"
+                        alt="Poster for @movieViewModel.Title" 
+                        loading="@(loadImageEagerly ? "eager" : "lazy")"/>
                 </div>
 
                 <div class="movie-content">
                     <h3 class="movie-title">@movieViewModel.Title</h3>
                     <time class="movie-year">@movieViewModel.ReleaseYear</time>
 
-                    <a href="/movies/edit/@movieViewModel.Id" class="edit-link">
+                    <a href="/catalog/@movieViewModel.Id/edit" class="edit-link">
                         Edit Movie
                     </a>
                 </div>

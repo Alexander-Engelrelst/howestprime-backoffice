@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Howestprime.Backoffice.ViewModels.Register;
+namespace Howestprime.Backoffice.ViewModels.Attributes;
 
 /// <summary>
 /// Attribute to validate that a year falls between 1888 (the release year of the first movie ever made) 
@@ -51,5 +51,3 @@ public class MovieYearRangeAttribute : ValidationAttribute
         return ValidationResult.Success;
     }
 }
-
-// TODO ask where this file belongs

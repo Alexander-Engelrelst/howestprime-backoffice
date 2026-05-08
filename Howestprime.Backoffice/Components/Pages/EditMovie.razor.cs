@@ -5,26 +5,52 @@ using Howestprime.Movies.ApiClient.Requests;
 using Howestprime.Movies.ApiClient.Responses;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
-using Microsoft.JSInterop;
 
 namespace Howestprime.Backoffice.Components.Pages;
 
-public partial class Register : ComponentBase
+public partial class EditMovie : ComponentBase
 {
     private bool _submissionPending;
 
+    [Parameter]
+    public Guid MovieId { get; set; }
+    
     [Inject]
     private IMovieCatalogApiClient MovieCatalogApiClient { get; set; } = null!;
     
-    private MovieFormViewModel ViewModel { get; set; }= new();
-    
+    private MovieFormViewModel ViewModel { get; set; } = new();
     private EditContext? EditContext { get; set; }
+    
+    protected override async Task OnInitializedAsync()
+    {        
+        FindMovieByIdRequest request = new FindMovieByIdRequest
+        {
+            MovieId = MovieId,
+            UserRole = "Manager"
+        };
+        
+        ApiResult<Movie> result = await MovieCatalogApiClient.FindMovieByIdAsync(request);
 
-    protected override void OnInitialized()
-    {
+        if (result.IsFailure || result.Value is null)
+        {
+            ViewModel.CriticalErrorMessage 
+                = "An error occurred while fetching the movie details. Please try again later or contact an administrator if the issue persists.";
+        }
+        else
+        {
+            ViewModel.FormDataViewModel.PosterUrl = result.Value.PosterUrl;
+            ViewModel.FormDataViewModel.Title = result.Value.Title;
+            ViewModel.FormDataViewModel.Description = result.Value.Description;
+            ViewModel.FormDataViewModel.ReleaseYear = result.Value.ReleaseYear;
+            ViewModel.FormDataViewModel.Duration = result.Value.Duration;
+            ViewModel.FormDataViewModel.AgeRating = result.Value.AgeRating;
+            ViewModel.FormDataViewModel.Genres = result.Value.Genres.ToHashSet();
+            ViewModel.FormDataViewModel.Actors = result.Value.Actors.ToHashSet();
+        }
+
         EditContext = new EditContext(ViewModel.FormDataViewModel);
     }
-    
+
     private async Task HandleManualSubmit()
     {
         if (_submissionPending) return;
@@ -47,8 +73,9 @@ public partial class Register : ComponentBase
     }
     private async Task HandleValidSubmit()
     {
-        RegisterMovieRequest request = new()
+        UpdateMovieRequest request = new()
         {
+            MovieId = MovieId,
             Title = ViewModel.FormDataViewModel.Title,
             Description = ViewModel.FormDataViewModel.Description,
             ReleaseYear = ViewModel.FormDataViewModel.ReleaseYear,
@@ -59,13 +86,12 @@ public partial class Register : ComponentBase
             Actors = ViewModel.FormDataViewModel.Actors.ToList()
         };
         
-        ApiResult<Created> response = await MovieCatalogApiClient.RegisterMovieAsync(request);
+        ApiResult<Created> response = await MovieCatalogApiClient.UpdateMovieAsync(request);
 
         if (response.IsSuccess)
         {
             ViewModel.SuccessFullySaved = true;
             ViewModel.ErrorMessage = string.Empty;
-            ViewModel.FormDataViewModel = new();
         }
         else
         {
@@ -74,4 +100,5 @@ public partial class Register : ComponentBase
         }
         
     }
+    
 }

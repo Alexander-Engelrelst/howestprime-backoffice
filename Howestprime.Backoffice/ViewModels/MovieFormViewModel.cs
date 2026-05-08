@@ -1,11 +1,10 @@
-﻿using Howestprime.Backoffice.ViewModels.Register;
-
-namespace Howestprime.Backoffice.ViewModels;
+﻿namespace Howestprime.Backoffice.ViewModels;
 
 public class MovieFormViewModel
 {
     public string ErrorMessage { get; set; } = string.Empty;
-    public bool? SuccessFullyRegistered { get; set; }
+    public bool? SuccessFullySaved { get; set; }
     
+    public string CriticalErrorMessage { get; set; } = string.Empty;
     public MovieFormDataViewModel FormDataViewModel { get; set; } = new();
 }

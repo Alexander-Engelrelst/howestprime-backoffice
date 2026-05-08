@@ -16,15 +16,15 @@
 {
     private bool IsActive(string href)
     {
-        var currentUri = new Uri(NavigationManager.Uri);
-        var currentPath = currentUri.AbsolutePath;
+        string relativePath = NavigationManager.ToBaseRelativePath(NavigationManager.Uri);
+        string current = relativePath.Trim('/').ToLower();
+        string target = href.Trim('/').ToLower();
 
-        if (href == "/")
+        if (string.IsNullOrEmpty(target))
         {
-            return currentPath == "/";
+            return string.IsNullOrWhiteSpace(current);
         }
-
-        var normalizedHref = href.StartsWith("/") ? href : "/" + href;
-        return currentPath == normalizedHref;
+        
+        return current.StartsWith(target);
     }
 }

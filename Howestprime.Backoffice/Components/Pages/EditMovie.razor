@@ -1,0 +1,12 @@
+﻿@page "/catalog/{movieId:guid}/edit"
+
+@rendermode InteractiveServer
+
+<MovieEntryForm
+    ViewModel="ViewModel"
+    SubmitButtonText="Save Changes"
+    HandleManualSubmit="HandleManualSubmit"
+    EditContext="EditContext"
+    CancelUrlRoute="/catalog" 
+    SuccessMessage="Movie successfully modified" />
+    

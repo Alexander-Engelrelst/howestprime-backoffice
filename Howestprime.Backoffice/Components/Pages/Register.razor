@@ -1,11 +1,9 @@
 ﻿@page "/register"
 @rendermode InteractiveServer
 
-<main>
-    <MovieEntryForm 
-        ViewModel="ViewModel"
-        HandleManualSubmit="HandleManualSubmit"
-        EditContext="EditContext"
-        HandleValidSubmit="HandleValidSubmit"
-        SubmitButtonText="REGISTER MOVIE" />
-</main>
+<MovieEntryForm 
+    ViewModel="ViewModel"
+    HandleManualSubmit="HandleManualSubmit"
+    EditContext="EditContext"
+    SubmitButtonText="REGISTER MOVIE" 
+    SuccessMessage="Movie registered successfully!" />

@@ -15,7 +15,7 @@ public partial class Catalog : ComponentBase
     [Inject]
     private IMovieCatalogApiClient MovieCatalogApiClient { get; set; } = null!;
     
-    private CatalogViewModel ViewModel { get; init; } = new();
+    private CatalogViewModel ViewModel { get; } = new();
     
     protected override async Task OnInitializedAsync()
     {
@@ -23,7 +23,6 @@ public partial class Catalog : ComponentBase
         
         SearchMovieCatalogRequest request = new()
         {
-            // TODO store this value somewhere else
             UserRole = "Manager"
         };
         

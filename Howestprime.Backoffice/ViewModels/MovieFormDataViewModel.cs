@@ -1,16 +1,17 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Howestprime.Backoffice.ViewModels.Attributes;
 
-namespace Howestprime.Backoffice.ViewModels.Register;
+namespace Howestprime.Backoffice.ViewModels;
 
 public class MovieFormDataViewModel
 {
     [Required(ErrorMessage = "Please fill in the title")]
     [MaxLength(200, ErrorMessage = "The title cannot be longer than 200 characters")]
-    public string Title { get; set; }
+    public string Title { get; set; } = string.Empty;
     
     [Required(ErrorMessage = "Please fill in the description")]
     [MaxLength(1000, ErrorMessage = "The description cannot be longer than 1000 characters")]
-    public string Description { get; set; }
+    public string Description { get; set; }  = string.Empty;
     
     [Required(ErrorMessage = "Please fill in the release year")]
     [Display(Name = "Release Year")]

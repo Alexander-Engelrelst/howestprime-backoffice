@@ -5,20 +5,29 @@
 
 <main class="app-content">
     <CalendarHeader NavigatorViewModel="@ViewModel.NavigatorViewModel" OnMonthChange="OnNavigateMonthAsync"/>
-    <DaysOfWeekHeader/>
-    <CalendarGrid
-        DayCellViewModels="@ViewModel.DayCellViewModels"
-        LegendViewModel="@ViewModel.LegendViewModel"
-        Year="@ViewModel.NavigatorViewModel.SelectedYear"
-        Month="@ViewModel.NavigatorViewModel.SelectedMonth"
-        OnDateClick="@OnMovieEventClicked"/>
-    
-    @if(ViewModel.SchedulerOverlayViewModel.IsOpen)
+    @if(!string.IsNullOrWhiteSpace(ViewModel.ErrorMessage))
     {
-        <SchedulingOverlay 
-            OverlayModel="@ViewModel.SchedulerOverlayViewModel"
-            OnClose="@CloseSchedulingOverlay"
-            OnSave="@SaveMovieEventAsync"
+        <div class="alert alert-danger" role="alert">
+            @ViewModel.ErrorMessage
+        </div>
+    }
+    else
+    {
+        <DaysOfWeekHeader/>
+        <CalendarGrid
+            DayCellViewModels="@ViewModel.DayCellViewModels"
+            LegendViewModel="@ViewModel.LegendViewModel"
+            Year="@ViewModel.NavigatorViewModel.SelectedYear"
+            Month="@ViewModel.NavigatorViewModel.SelectedMonth"
+            OnDateClick="@OnMovieEventClicked"/>
+    
+        @if(ViewModel.SchedulerOverlayViewModel.IsOpen)
+        {
+            <SchedulingOverlay 
+                OverlayModel="@ViewModel.SchedulerOverlayViewModel"
+                OnClose="@CloseSchedulingOverlay"
+                OnSave="@SaveMovieEventAsync"
             />
+        }
     }
 </main>

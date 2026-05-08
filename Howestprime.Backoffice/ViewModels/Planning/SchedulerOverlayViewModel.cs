@@ -7,7 +7,6 @@ public class SchedulerOverlayViewModel
     private const int MINUTES_BETWEEN_MOVIE_LIST_UPDATES = 5;
     public MovieEventFormViewModel Form { get; init; } = new();
     
-    // TODO ask if this is allowed
     public bool IsOpen { get; set; } = false;
    
     public string ErrorMessage { get; set; } = String.Empty;

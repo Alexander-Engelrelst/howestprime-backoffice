@@ -12,11 +12,15 @@ public class PlanningViewModel
     
     public Dictionary<int, DayCellViewModel> DayCellViewModels { get; private set; } = new();
     
+    public string ErrorMessage { get; set; } = string.Empty;
+    
     public void UpdateMovieEvents(IReadOnlyList<MovieEvent> movieEvents)
     {
         DayCellViewModels.Clear();
 
-        ILookup<int, MovieEventViewModel> movieLookup = movieEvents.Select(me => me.ToViewModel()).ToLookup(me => me.ShowTime.Day);
+        ILookup<int, MovieEventViewModel> movieLookup = movieEvents
+            .Select(me => me.ToViewModel())
+            .ToLookup(me => me.ShowTime.Day);
         
         int daysInMonth = DateTime.DaysInMonth(NavigatorViewModel.SelectedYear, NavigatorViewModel.SelectedMonth);
 

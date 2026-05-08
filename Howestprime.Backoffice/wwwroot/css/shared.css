@@ -217,6 +217,7 @@ main {
   padding: var(--spacing-sm) var(--spacing-lg);
   font-size: var(--font-size-md);
   transition: background-color var(--transition-speed);
+  text-transform: uppercase;
 }
 
 .btn:hover, .submit-button:hover, .modal-submit-btn:hover {

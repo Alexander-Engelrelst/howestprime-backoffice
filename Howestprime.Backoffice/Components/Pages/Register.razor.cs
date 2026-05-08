@@ -1,4 +1,5 @@
-﻿using Howestprime.Backoffice.ViewModels.Register;
+﻿using Howestprime.Backoffice.ViewModels;
+using Howestprime.Backoffice.ViewModels.Register;
 using Howestprime.Movies.ApiClient.Clients;
 using Howestprime.Movies.ApiClient.Core;
 using Howestprime.Movies.ApiClient.Requests;

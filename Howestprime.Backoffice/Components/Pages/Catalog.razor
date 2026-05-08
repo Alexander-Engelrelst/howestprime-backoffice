@@ -1,4 +1,5 @@
 ﻿@page "/catalog"
+@using Howestprime.Backoffice.ViewModels.Catalog
 
 @rendermode InteractiveServer
 
@@ -20,24 +21,26 @@ else if (!ViewModel.Movies.Any())
 }
 else
 {
-    <article class="movie-grid">
-        @foreach (var movie in ViewModel.Movies)
+    <section class="movie-grid">
+        @for (int i = 0; i < ViewModel.Movies.Count; i++)
         {
-            <div class="movie-card">
-                <div class="movie-poster">
-                    <img src="@movie.PosterUrl" alt="Poster for @movie.Title" loading="lazy" />
-                </div>
+            CatalogMovieViewModel movieViewModel = ViewModel.Movies[i];
+            bool loadImageEagerly = i < MOVIE_EAGER_LOAD_THRESHOLD;
             
+            <article class="movie-card">
+                <div class="movie-poster">
+                    <img src="@movieViewModel.PosterUrl" alt="Poster for @movieViewModel.Title" loading="lazy"/>
+                </div>
+
                 <div class="movie-content">
-                    <h3 class="movie-title">@movie.Title</h3>
-                    <time class="movie-year">@movie.ReleaseYear</time>
-                
-                    <a href="/movies/edit/@movie.Id" class="edit-link">
+                    <h3 class="movie-title">@movieViewModel.Title</h3>
+                    <time class="movie-year">@movieViewModel.ReleaseYear</time>
+
+                    <a href="/movies/edit/@movieViewModel.Id" class="edit-link">
                         Edit Movie
                     </a>
                 </div>
-            </div>
+            </article>
         }
-    </article>
-
+    </section>
 }

@@ -10,6 +10,8 @@ namespace Howestprime.Backoffice.Components.Pages;
 
 public partial class Catalog : ComponentBase
 {
+    private const int MOVIE_EAGER_LOAD_THRESHOLD = 12;
+    
     [Inject]
     private IMovieCatalogApiClient MovieCatalogApiClient { get; set; } = null!;
     

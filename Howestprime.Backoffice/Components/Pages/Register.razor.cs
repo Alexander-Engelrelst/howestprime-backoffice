@@ -4,6 +4,7 @@ using Howestprime.Movies.ApiClient.Core;
 using Howestprime.Movies.ApiClient.Requests;
 using Howestprime.Movies.ApiClient.Responses;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Forms;
 
 namespace Howestprime.Backoffice.Components.Pages;
 
@@ -15,27 +16,30 @@ public partial class Register : ComponentBase
     
     private MovieViewModel FormViewModel { get; set; } = new();
     private RegisterViewModel ViewModel { get; set; }= new();
-    private string _tempGenre = "";
-    private string _tempActor = "";
     
-    private void TryAddGenre() 
-    { 
-        if (!string.IsNullOrWhiteSpace(_tempGenre))
+    private EditContext? _editContext;
+
+    protected override void OnInitialized()
+    {
+        // Initialize the context manually so you have a solid reference to it
+        _editContext = new EditContext(FormViewModel);
+    }
+    
+    private async Task HandleManualSubmit()
+    {
+        bool isValid = _editContext?.Validate() ?? false;
+
+        if (isValid)
         {
-            FormViewModel.Genres.Add(_tempGenre.Trim()); 
-            _tempGenre = ""; 
-        } 
+            await HandleValidSubmit();
+        }
+        else
+        {
+            _editContext?.NotifyValidationStateChanged();
+            ViewModel.SuccessFullyRegistered = false;
+            ViewModel.ErrorMessage = "Please fix the errors before submitting.";
+        }
     }
-
-    private void TryAddActor() 
-    { 
-        if (!string.IsNullOrWhiteSpace(_tempActor)) 
-        { 
-            FormViewModel.Actors.Add(_tempActor.Trim()); 
-            _tempActor = ""; 
-        } 
-    }
-
     private async Task HandleValidSubmit()
     {
         RegisterMovieRequest request = new()

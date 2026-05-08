@@ -4,9 +4,9 @@
 <div class="container mt-5">
     <div class="row">
         <div class="col-lg-8">
-            <EditForm Model="@FormViewModel" 
-                      OnValidSubmit="HandleValidSubmit"
-                      class="p-4 border rounded shadow-sm bg-light">
+            <EditForm OnValidSubmit="HandleValidSubmit"
+                      class="p-4 border rounded shadow-sm bg-light"
+                      EditContext="_editContext">
             <DataAnnotationsValidator/>
 
             <div class="row g-3">
@@ -54,78 +54,26 @@
                 </div>
                 
                 @* Actors Section *@
-                <div class="col-md-6">
-                    <label for="actorInput" class="form-label fw-bold">Actors</label>
-                    <div class="input-group mb-2">
-                        <input type="text"
-                               class="form-control"
-                               placeholder="Add actor..."
-                               @bind="_tempActor"
-                               id="actorInput"/>
+                <NonEmptyStringSetInput Label="Actors"
+                              InputId="actorInput"
+                              Placeholder="Add actor..."
+                              Items="@FormViewModel.Actors"
+                              For="@(() => FormViewModel.Actors)"
+                              BadgeClass="bg-dark"/>
 
-                        <button type="button"
-                                class="btn btn-outline-secondary"
-                                @onclick="TryAddActor">
-                            Add
-                        </button>
-                    </div>
-                    <ValidationMessage For="@(() => FormViewModel.Actors)"/>
-
-                    <div class="d-flex flex-wrap gap-2">
-                        @foreach (var actor in FormViewModel.Actors)
-                        {
-                            <span class="badge rounded-pill bg-dark d-flex align-items-center p-2 text-break text-wrap">
-                                @actor
-                                <button
-                                    type="button"
-                                    class="btn-close btn-close-white ms-2"
-                                    style="font-size: 0.5rem"
-                                    aria-label="Remove"
-                                    @onclick="() => FormViewModel.Actors.Remove(actor)"></button>
-                            </span>
-                        }
-                    </div>
-                </div>
-
-                @* Genres Section *@
-                <div class="col-md-6">
-                    <label for="genreInput" class="form-label fw-bold">Genres</label>
-                    <div class="input-group mb-2">
-                        <input type="text"
-                               class="form-control"
-                               placeholder="Add genre..."
-                               @bind="_tempGenre"
-                               id="genreInput"/>
-
-                        <button type="button"
-                                class="btn btn-outline-secondary"
-                                @onclick="TryAddGenre">
-                            Add
-                        </button>
-                    </div>
-                    <ValidationMessage For="@(() => FormViewModel.Genres)"/>
-
-                    <div class="d-flex flex-wrap gap-2">
-                        @foreach (var genre in FormViewModel.Genres)
-                        {
-                            <span class="badge rounded-pill bg-primary d-flex align-items-center p-2 text-break text-wrap">
-                                @genre
-                                <button
-                                    type="button"
-                                    class="btn-close btn-close-white ms-2"
-                                    style="font-size: 0.5rem"
-                                    aria-label="Remove"
-                                    @onclick="() => FormViewModel.Genres.Remove(genre)"></button>
-                            </span>
-                        }
-                    </div>
-                </div>
+                 @* Genres Section *@
+                <NonEmptyStringSetInput Label="Genres"
+                              InputId="genreInput"
+                              Placeholder="Add genre..."
+                              Items="@FormViewModel.Genres"
+                              For="@(() => FormViewModel.Genres)"
+                              BadgeClass="bg-primary"/>
 
                 @* Submit Button & API Feedback *@
                 <div class="col-12 text-end mt-4 border-top pt-3">
                     <div class="d-flex align-items-center justify-content-end gap-3">
         
-                        @if (ViewModel.SuccessFullyRegistered.HasValue)
+                        @if (ViewModel.SuccessFullyRegistered.HasValue && ViewModel.SuccessFullyRegistered.Value)
                         {
                             <div class="alert alert-success py-2 px-3 mb-0 d-flex align-items-center shadow-sm" role="alert">
                                 <i class="bi bi-check-circle-fill me-2"></i>
@@ -140,7 +88,7 @@
                             </div>
                         }
 
-                        <button type="submit" class="btn btn-success btn-lg px-5">
+                        <button type="button" class="btn btn-success btn-lg px-5" @onclick="HandleManualSubmit">
                             Register Movie
                         </button>
                     </div>
@@ -150,10 +98,6 @@
         </div>
         
         @* Preview Section *@
-        <FormPreview Url="@FormViewModel.PosterUrl"/>
+        <PosterPreview Url="@FormViewModel.PosterUrl"/>
     </div>
 </div>
-
-@code {
-    
-}

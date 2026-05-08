@@ -1,0 +1,71 @@
+@using System.Linq.Expressions
+<div class="col-md-6">
+    <label for="@InputId" class="form-label fw-bold">@Label</label>
+    <div class="input-group mb-2">
+        <input type="text"
+               class="form-control"
+               placeholder="@Placeholder"
+               @bind-value="newTag"
+               @bind-value:event="oninput"
+               id="@InputId"
+               @onkeydown="HandleKeyDown" />
+
+        <button type="button"
+                class="btn btn-outline-secondary"
+                @onclick="AddTag">
+            Add
+        </button>
+    </div>
+    
+    <ValidationMessage For="@For" />
+
+    <div class="d-flex flex-wrap gap-2">
+        @foreach (var item in Items)
+        {
+            <span class="badge rounded-pill @BadgeClass d-flex align-items-center p-2 text-break text-wrap">
+                @item
+                <button type="button"
+                        class="btn-close btn-close-white ms-2"
+                        style="font-size: 0.5rem"
+                        aria-label="Remove"
+                        @onclick="() => RemoveTag(item)"></button>
+            </span>
+        }
+    </div>
+</div>
+
+@code {
+    private string newTag;
+
+    [Parameter, EditorRequired]
+    public HashSet<string> Items { get; set; }
+
+    [Parameter] public string Label { get; set; } = "Items";
+    [Parameter] public string InputId { get; set; } = "tagInput";
+    [Parameter] public string Placeholder { get; set; } = "Add...";
+    [Parameter] public string BadgeClass { get; set; } = "bg-dark";
+    [Parameter, EditorRequired] public Expression<Func<HashSet<string>>> For { get; set; }
+    
+    private void AddTag()
+    {
+        if (!string.IsNullOrWhiteSpace(newTag))
+        {
+            Items.Add(newTag.Trim());
+            newTag = string.Empty;
+            StateHasChanged();
+        }
+    }
+
+    private void RemoveTag(string tag)
+    {
+        Items.Remove(tag);
+    }
+
+    private void HandleKeyDown(KeyboardEventArgs e)
+    {
+        if (e.Key == "Enter")
+        {
+            AddTag();
+        }
+    }
+}

@@ -13,7 +13,6 @@ public class NavigatorViewModel
     private DateOnly MaxDate => CurrentDate.AddMonths(YearLimit * 12);
     private DateOnly MinDate => CurrentDate.AddMonths(-YearLimit * 12);
     
-    //TODO ask whether things like these are okay if following viewmodel = dto
     public void Navigate(int direction)
     {
         SelectedDate = SelectedDate.AddMonths(direction);

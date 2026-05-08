@@ -1,7 +1,7 @@
 ﻿@page "/Register"
 @rendermode InteractiveServer
 
-<div class="container mt-5">
+<main>
     <div class="row">
         <div class="col-lg-8">
             <EditForm OnValidSubmit="HandleValidSubmit"
@@ -99,4 +99,4 @@
         @* Preview Section *@
         <PosterPreview Url="@FormViewModel.PosterUrl"/>
     </div>
-</div>
+</main>

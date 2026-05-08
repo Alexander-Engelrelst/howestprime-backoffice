@@ -24,7 +24,6 @@ public partial class Planning : ComponentBase
     }
     private async Task OnNavigateMonthAsync(int direction)
     {
-        // TODO ensure movies aren't fetched if the user tries to force navigation it doesn't work
         ViewModel.NavigatorViewModel.Navigate(direction);
         await FetchMovieEvents();
     }

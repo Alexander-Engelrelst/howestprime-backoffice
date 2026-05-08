@@ -5,6 +5,7 @@ using Howestprime.Movies.ApiClient.Requests;
 using Howestprime.Movies.ApiClient.Responses;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
+using Microsoft.JSInterop;
 
 namespace Howestprime.Backoffice.Components.Pages;
 
@@ -19,25 +20,28 @@ public partial class Register : ComponentBase
     
     private EditContext? _editContext;
 
+    private bool SubmissionPending { get; set; } = false;
     protected override void OnInitialized()
     {
-        // Initialize the context manually so you have a solid reference to it
         _editContext = new EditContext(FormViewModel);
     }
     
     private async Task HandleManualSubmit()
     {
+        SubmissionPending = true;
         bool isValid = _editContext?.Validate() ?? false;
 
         if (isValid)
         {
             await HandleValidSubmit();
+            SubmissionPending = false;
         }
         else
         {
             _editContext?.NotifyValidationStateChanged();
             ViewModel.SuccessFullyRegistered = false;
             ViewModel.ErrorMessage = "Please fix the errors before submitting.";
+            SubmissionPending = false;
         }
     }
     private async Task HandleValidSubmit()

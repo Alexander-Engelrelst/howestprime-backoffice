@@ -16,14 +16,14 @@ public partial class Register : ComponentBase
     [Inject]
     private IMovieCatalogApiClient MovieCatalogApiClient { get; set; } = null!;
     
-    private RegisterViewModel ViewModel { get; set; }= new();
+    private MovieFormViewModel ViewModel { get; set; }= new();
     
     private EditContext? EditContext { get; set; }
 
     private bool SubmissionPending { get; set; } = false;
     protected override void OnInitialized()
     {
-        EditContext = new EditContext(ViewModel.FormViewModel);
+        EditContext = new EditContext(ViewModel.FormDataViewModel);
     }
     
     private async Task HandleManualSubmit()
@@ -48,14 +48,14 @@ public partial class Register : ComponentBase
     {
         RegisterMovieRequest request = new()
         {
-            Title = ViewModel.FormViewModel.Title,
-            Description = ViewModel.FormViewModel.Description,
-            ReleaseYear = ViewModel.FormViewModel.ReleaseYear,
-            PosterUrl = ViewModel.FormViewModel.PosterUrl,
-            Duration = ViewModel.FormViewModel.Duration,
-            AgeRating = ViewModel.FormViewModel.AgeRating,
-            Genres = ViewModel.FormViewModel.Genres.ToList(),
-            Actors = ViewModel.FormViewModel.Actors.ToList()
+            Title = ViewModel.FormDataViewModel.Title,
+            Description = ViewModel.FormDataViewModel.Description,
+            ReleaseYear = ViewModel.FormDataViewModel.ReleaseYear,
+            PosterUrl = ViewModel.FormDataViewModel.PosterUrl,
+            Duration = ViewModel.FormDataViewModel.Duration,
+            AgeRating = ViewModel.FormDataViewModel.AgeRating,
+            Genres = ViewModel.FormDataViewModel.Genres.ToList(),
+            Actors = ViewModel.FormDataViewModel.Actors.ToList()
         };
         
         ApiResult<Created> response = await MovieCatalogApiClient.RegisterMovieAsync(request);
@@ -64,7 +64,7 @@ public partial class Register : ComponentBase
         {
             ViewModel.SuccessFullyRegistered = true;
             ViewModel.ErrorMessage = string.Empty;
-            ViewModel.FormViewModel = new();
+            ViewModel.FormDataViewModel = new();
         }
         else
         {

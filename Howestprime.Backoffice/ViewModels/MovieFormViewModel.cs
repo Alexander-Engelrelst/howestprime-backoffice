@@ -2,10 +2,10 @@
 
 namespace Howestprime.Backoffice.ViewModels;
 
-public class RegisterViewModel
+public class MovieFormViewModel
 {
     public string ErrorMessage { get; set; } = string.Empty;
     public bool? SuccessFullyRegistered { get; set; }
     
-    public MovieViewModel FormViewModel { get; set; } = new();
+    public MovieFormDataViewModel FormDataViewModel { get; set; } = new();
 }

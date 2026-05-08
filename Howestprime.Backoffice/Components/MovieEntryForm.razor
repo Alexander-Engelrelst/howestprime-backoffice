@@ -11,45 +11,67 @@
                 @* Title *@
                 <div class="register-col-8">
                     <label for="movieTitle" class="register-form-label">Movie Title</label>
-                    <InputText id="movieTitle" @bind-Value="FormViewModel.Title" class="register-form-control" placeholder="e.g. Inception"/>
-                    <ValidationMessage For="@(() => FormViewModel.Title)"/>
+                    <InputText 
+                        id="movieTitle"
+                        @bind-Value="ViewModel.FormDataViewModel.Title"
+                        class="register-form-control"
+                        placeholder="e.g. Inception"/>
+                    <ValidationMessage For="@(() => ViewModel.FormDataViewModel.Title)"/>
                 </div>
 
                 @* Release Year *@
                 <div class="register-col-4">
                     <label for="releaseYear" class="register-form-label">Release Year</label>
-                    <InputNumber id="releaseYear" @bind-Value="FormViewModel.ReleaseYear" class="register-form-control"/>
-                    <ValidationMessage For="@(() => FormViewModel.ReleaseYear)"/>
+                    <InputNumber
+                        id="releaseYear"
+                        @bind-Value="ViewModel.FormDataViewModel.ReleaseYear"
+                        class="register-form-control"/>
+                    <ValidationMessage For="@(() => ViewModel.FormDataViewModel.ReleaseYear)"/>
                 </div>
 
                 @* Poster URL *@
                 <div class="">
                     <label for="posterUrl" class="register-form-label">Poster URL</label>
-                    <InputText id="posterUrl" @bind-Value="FormViewModel.PosterUrl" class="register-form-control" placeholder="https://..."/>
-                    <ValidationMessage For="@(() => FormViewModel.PosterUrl)"/>
+                    <InputText 
+                        id="posterUrl" 
+                        @bind-Value="ViewModel.FormDataViewModel.PosterUrl"
+                        class="register-form-control" placeholder="https://..."/>
+                    <ValidationMessage For="@(() => ViewModel.FormDataViewModel.PosterUrl)"/>
                 </div>
 
                 @* Description *@
                 <div class="">
                     <label for="description" class="register-form-label">Description</label>
-                    <InputTextArea id="description" @bind-Value="FormViewModel.Description" class="register-form-control" rows="4"
-                                   placeholder="Enter a brief summary of the movie..."/>
-                    <ValidationMessage For="@(() => FormViewModel.Description)"/>
+                    <InputTextArea 
+                        id="description" 
+                        @bind-Value="ViewModel.FormDataViewModel.Description"
+                        class="register-form-control" 
+                        rows="4"
+                        placeholder="Enter a brief summary of the movie..."/>
+                    <ValidationMessage For="@(() => ViewModel.FormDataViewModel.Description)"/>
                 </div>
                 
                 @* Duration *@
                 <div class="register-form-row">
                     <div class="register-col-6">
                         <label for="duration" class="register-form-label">Duration (minutes)</label>
-                        <InputNumber id="duration" @bind-Value="FormViewModel.Duration" class="register-form-control" placeholder="e.g. 120" />
-                        <ValidationMessage For="@(() => FormViewModel.Duration)" />
+                        <InputNumber 
+                            id="duration" 
+                            @bind-Value="ViewModel.FormDataViewModel.Duration"
+                            class="register-form-control" 
+                            placeholder="e.g. 120" />
+                        <ValidationMessage For="@(() => ViewModel.FormDataViewModel.Duration)" />
                     </div>
 
                     @* Age rating *@
                     <div class="register-col-6">
                         <label for="ageRating" class="register-form-label">Age Rating</label>
-                        <InputNumber id="ageRating" @bind-Value="FormViewModel.AgeRating" class="register-form-control" placeholder="0-18" />
-                        <ValidationMessage For="@(() => FormViewModel.AgeRating)" />
+                        <InputNumber 
+                            id="ageRating"
+                            @bind-Value="ViewModel.FormDataViewModel.AgeRating"
+                            class="register-form-control"
+                            placeholder="0-18" />
+                        <ValidationMessage For="@(() => ViewModel.FormDataViewModel.AgeRating)" />
                     </div>
                 </div>
                 
@@ -57,16 +79,16 @@
                 <NonEmptyStringSetInput Label="Actors"
                               InputId="actorInput"
                               Placeholder="Add actor..."
-                              Items="@FormViewModel.Actors"
-                              For="@(() => FormViewModel.Actors)"
+                              Items="@ViewModel.FormDataViewModel.Actors"
+                              For="@(() => ViewModel.FormDataViewModel.Actors)"
                               BadgeClass="register-badge-dark"/>
 
                  @* Genres Section *@
                 <NonEmptyStringSetInput Label="Genres"
                               InputId="genreInput"
                               Placeholder="Add genre..."
-                              Items="@FormViewModel.Genres"
-                              For="@(() => FormViewModel.Genres)"
+                              Items="@ViewModel.FormDataViewModel.Genres"
+                              For="@(() => ViewModel.FormDataViewModel.Genres)"
                               BadgeClass="register-badge-primary"/>
 
                 @* Submit Button & API Feedback *@
@@ -106,11 +128,11 @@
         </div>
         
         @* Preview Section *@
-        <PosterPreview Url="@FormViewModel.PosterUrl"/>
+        <PosterPreview Url="@ViewModel.FormDataViewModel.PosterUrl"/>
     </div>
 @code {
     [Parameter, EditorRequired]
-    public RegisterViewModel ViewModel { get; set; }
+    public MovieFormViewModel ViewModel { get; set; }
     
     [Parameter, EditorRequired]
     public EventCallback HandleValidSubmit { get; set; }
@@ -126,6 +148,4 @@
     
     [Parameter, EditorRequired]
     public string SubmitButtonText { get; set; }
-    
-    private MovieViewModel FormViewModel => ViewModel.FormViewModel;
 }

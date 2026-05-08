@@ -2,7 +2,7 @@
 
 namespace Howestprime.Backoffice.ViewModels.Register;
 
-public class MovieViewModel
+public class MovieFormDataViewModel
 {
     [Required(ErrorMessage = "Please fill in the title")]
     [MaxLength(200, ErrorMessage = "The title cannot be longer than 200 characters")]

@@ -92,7 +92,7 @@
                                             InputId="actorInput"
                                             Placeholder="Add actor..."
                                             Items="@ViewModel.FormDataViewModel.Actors"
-                                            For="@(() => ViewModel.FormDataViewModel.Actors)"
+                                            ViewModelItem="@(() => ViewModel.FormDataViewModel.Actors)"
                                             BadgeClass="register-badge-dark"
                                             @ref="_actorInput"/>
 
@@ -101,7 +101,7 @@
                                             InputId="genreInput"
                                             Placeholder="Add genre..."
                                             Items="@ViewModel.FormDataViewModel.Genres"
-                                            For="@(() => ViewModel.FormDataViewModel.Genres)"
+                                            ViewModelItem="@(() => ViewModel.FormDataViewModel.Genres)"
                                             BadgeClass="register-badge-primary"
                                             @ref="_genreInput"/>
 

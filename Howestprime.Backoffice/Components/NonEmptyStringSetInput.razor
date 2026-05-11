@@ -17,7 +17,7 @@
         </button>
     </div>
     
-    <ValidationMessage For="@For" />
+    <ValidationMessage For="@ViewModelItem" />
 
     <div class="d-flex flex-wrap gap-2">
         @foreach (var item in Items)
@@ -44,7 +44,7 @@
     [Parameter] public string InputId { get; set; } = "tagInput";
     [Parameter] public string Placeholder { get; set; } = "Add...";
     [Parameter] public string BadgeClass { get; set; } = "bg-dark";
-    [Parameter, EditorRequired] public Expression<Func<HashSet<string>>> For { get; set; }
+    [Parameter, EditorRequired] public Expression<Func<HashSet<string>>> ViewModelItem { get; set; }
 
     public void Clear()
     {

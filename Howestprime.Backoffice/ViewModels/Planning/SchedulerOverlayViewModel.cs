@@ -1,7 +1,6 @@
-﻿using Howestprime.Backoffice.ViewModels.Planning;
-using Howestprime.Movies.ApiClient.Responses;
+﻿using Howestprime.Movies.ApiClient.Responses;
 
-namespace Howestprime.Backoffice.ViewModels;
+namespace Howestprime.Backoffice.ViewModels.Planning;
 
 public class SchedulerOverlayViewModel
 {

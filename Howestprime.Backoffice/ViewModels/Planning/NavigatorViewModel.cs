@@ -7,6 +7,8 @@ public class NavigatorViewModel
     public int SelectedYear => SelectedDate.Year;
     public int SelectedMonth => SelectedDate.Month;
     
+    public int DaysInCurrentMonth => DateTime.DaysInMonth(SelectedYear, SelectedMonth);
+    
     public bool CanNavigateForward => SelectedDate.AddMonths(1) <= MaxDate;
     public bool CanNavigateBack => SelectedDate.AddMonths(-1) >= MinDate;
     private DateOnly CurrentDate => DateOnly.FromDateTime(DateTime.UtcNow);

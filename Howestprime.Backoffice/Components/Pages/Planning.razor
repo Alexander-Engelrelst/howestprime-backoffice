@@ -1,5 +1,4 @@
 ﻿@page "/"
-@using Microsoft.AspNetCore.Mvc.RazorPages
 
 @rendermode InteractiveServer
 
@@ -19,6 +18,7 @@
             LegendViewModel="@ViewModel.LegendViewModel"
             Year="@ViewModel.NavigatorViewModel.SelectedYear"
             Month="@ViewModel.NavigatorViewModel.SelectedMonth"
+            DaysInMonth="@ViewModel.NavigatorViewModel.DaysInCurrentMonth"
             OnDateClick="@OnMovieEventClicked"/>
     
         @if(ViewModel.SchedulerOverlayViewModel.IsOpen)

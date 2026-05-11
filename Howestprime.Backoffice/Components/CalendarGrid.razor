@@ -5,9 +5,7 @@
     @foreach (int day in Enumerable.Range(1, DaysInMonth))
     {
         DateOnly date = new DateOnly(Year, Month, day);
-        DayCellViewModel dayViewModel = DayCellViewModels.TryGetValue(day, out var value)
-            ? value
-            : new DayCellViewModel();
+        DayCellViewModel dayViewModel = DayCellViewModels[day];
 
         <DayCell Date="@date"
                  ViewModel="@dayViewModel"
@@ -18,7 +16,7 @@
 
 @code {
     [Parameter, EditorRequired]
-    public IReadOnlyDictionary<int, DayCellViewModel> DayCellViewModels { get; set; } = new Dictionary<int, DayCellViewModel>();
+    public IReadOnlyDictionary<int, DayCellViewModel> DayCellViewModels { get; set; }
 
     [Parameter, EditorRequired]
     public LegendViewModel LegendViewModel { get; set; } = new();
@@ -32,5 +30,6 @@
     [Parameter, EditorRequired]
     public EventCallback<DateOnly> OnDateClick { get; set; }
 
-    private int DaysInMonth => DateTime.DaysInMonth(Year, Month);
+    [Parameter, EditorRequired]
+    public int DaysInMonth { get; set; }
 }

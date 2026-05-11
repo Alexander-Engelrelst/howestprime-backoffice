@@ -51,7 +51,7 @@ public partial class EditMovie : ComponentBase
         EditContext = new EditContext(ViewModel.FormDataViewModel);
     }
 
-    private async Task HandleManualSubmit()
+    private async Task HandleManualSubmit(Action[] clearInputFields)
     {
         if (_submissionPending) return;
         
@@ -60,7 +60,7 @@ public partial class EditMovie : ComponentBase
 
         if (isValid)
         {
-            await HandleValidSubmit();
+            await HandleValidSubmit(clearInputFields);
         }
         else
         {
@@ -71,7 +71,7 @@ public partial class EditMovie : ComponentBase
         
         _submissionPending = false;
     }
-    private async Task HandleValidSubmit()
+    private async Task HandleValidSubmit(Action[] tempFieldClears)
     {
         UpdateMovieRequest request = new()
         {
@@ -92,6 +92,11 @@ public partial class EditMovie : ComponentBase
         {
             ViewModel.SuccessFullySaved = true;
             ViewModel.ErrorMessage = string.Empty;
+            
+            foreach (Action clearField in tempFieldClears)
+            {
+                clearField();
+            }
         }
         else
         {

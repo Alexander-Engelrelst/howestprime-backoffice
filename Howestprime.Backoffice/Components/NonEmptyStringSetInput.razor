@@ -5,7 +5,7 @@
         <input type="text"
                class="form-control"
                placeholder="@Placeholder"
-               @bind-value="_newTag"
+               @bind-value="_valueToAdd"
                @bind-value:event="oninput"
                id="@InputId"
                @onkeydown="HandleKeyDown" />
@@ -35,7 +35,7 @@
 </div>
 
 @code {
-    private string _newTag = string.Empty;
+    private string _valueToAdd = string.Empty;
 
     [Parameter, EditorRequired]
     public HashSet<string> Items { get; set; }
@@ -48,15 +48,15 @@
 
     public void Clear()
     {
-        _newTag = string.Empty;
+        _valueToAdd = string.Empty;
     }
     
     private void AddTag()
     {
-        if (!string.IsNullOrWhiteSpace(_newTag))
+        if (!string.IsNullOrWhiteSpace(_valueToAdd))
         {
-            Items.Add(_newTag.Trim());
-            _newTag = string.Empty;
+            Items.Add(_valueToAdd.Trim());
+            _valueToAdd = string.Empty;
             StateHasChanged();
         }
     }

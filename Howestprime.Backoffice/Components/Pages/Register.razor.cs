@@ -25,7 +25,7 @@ public partial class Register : ComponentBase
         EditContext = new EditContext(ViewModel.FormDataViewModel);
     }
     
-    private async Task HandleManualSubmit()
+    private async Task HandleManualSubmit(Action[] clearInputFields)
     {
         if (_submissionPending) return;
         
@@ -34,7 +34,7 @@ public partial class Register : ComponentBase
 
         if (isValid)
         {
-            await HandleValidSubmit();
+            await HandleValidSubmit(clearInputFields);
         }
         else
         {
@@ -45,7 +45,7 @@ public partial class Register : ComponentBase
         
         _submissionPending = false;
     }
-    private async Task HandleValidSubmit()
+    private async Task HandleValidSubmit(Action[] tempFieldClears)
     {
         RegisterMovieRequest request = new()
         {
@@ -66,6 +66,11 @@ public partial class Register : ComponentBase
             ViewModel.SuccessFullySaved = true;
             ViewModel.ErrorMessage = string.Empty;
             ViewModel.FormDataViewModel = new();
+            
+            foreach (var clearField in tempFieldClears)
+            {
+                clearField();
+            }
         }
         else
         {

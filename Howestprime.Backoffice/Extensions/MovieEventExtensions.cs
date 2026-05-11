@@ -1,4 +1,5 @@
 ﻿using Howestprime.Backoffice.ViewModels;
+using Howestprime.Backoffice.ViewModels.Planning;
 using Howestprime.Movies.ApiClient.Responses;
 
 namespace Howestprime.Backoffice.Extensions;

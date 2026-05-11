@@ -1,5 +1,6 @@
 ﻿@using Howestprime.Backoffice.ViewModels
-<EditForm Model="OverlayModel.Form" OnValidSubmit="HandleValidSubmit" class="modal-form" id="modalForm">
+@using Howestprime.Backoffice.ViewModels.Planning
+<EditForm Model="OverlayModel.Form" OnValidSubmit="HandleValidSubmit"  class="modal-form" id="modalForm">
     <DataAnnotationsValidator />
 
     @if (OverlayModel.Form.SelectedDate == null)

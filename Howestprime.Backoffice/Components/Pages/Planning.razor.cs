@@ -1,4 +1,5 @@
 ﻿using Howestprime.Backoffice.ViewModels;
+using Howestprime.Backoffice.ViewModels.Planning;
 using Howestprime.Movies.ApiClient.Clients;
 using Howestprime.Movies.ApiClient.Core;
 using Howestprime.Movies.ApiClient.Requests;
@@ -97,7 +98,6 @@ public partial class Planning : ComponentBase
     {
         ScheduleMovieEventRequest request = new()
         {
-            // if any of these are null the formViewModel will catch this
             MovieId = (Guid)formViewModel.MovieId!,
             RoomId = (Guid)formViewModel.RoomId!,
             Showtime = formViewModel.EventDateTime!.Value

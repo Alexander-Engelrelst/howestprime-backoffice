@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Howestprime.Backoffice.ViewModels;
+namespace Howestprime.Backoffice.ViewModels.Planning;
 
 public class MovieEventFormViewModel
 {

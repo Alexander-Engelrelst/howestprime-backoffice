@@ -1,4 +1,4 @@
-﻿namespace Howestprime.Backoffice.ViewModels;
+﻿namespace Howestprime.Backoffice.ViewModels.Planning;
 
 public class NavigatorViewModel
 {

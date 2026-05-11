@@ -153,7 +153,7 @@
     public MovieFormViewModel ViewModel { get; set; }
     
     [Parameter, EditorRequired]
-    public EventCallback HandleManualSubmit { get; set; }
+    public EventCallback<Action[]> HandleManualSubmit { get; set; }
 
     // must be nullable to not have issues with race conditions when the form data must be preloaded
     [Parameter, EditorRequired] 
@@ -171,12 +171,6 @@
 
     private async Task ProcessSubmit()
     {
-        await HandleManualSubmit.InvokeAsync();
-
-        if (ViewModel.SuccessFullySaved.HasValue && ViewModel.SuccessFullySaved.Value)
-        {
-            _actorInput.Clear();
-            _genreInput.Clear();
-        }
+        await HandleManualSubmit.InvokeAsync([_actorInput.Clear, _genreInput.Clear]);
     }
 }

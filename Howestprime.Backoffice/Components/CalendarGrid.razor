@@ -2,13 +2,10 @@
 @using Howestprime.Backoffice.ViewModels.Planning
 
 <div class="calendar-grid">
-    @foreach (int day in Enumerable.Range(1, DaysInMonth))
+    @foreach ((DateOnly date, DayCellViewModel dayCellViewModel) in DayCellViewModels)
     {
-        DateOnly date = new DateOnly(Year, Month, day);
-        DayCellViewModel dayViewModel = DayCellViewModels[day];
-
         <DayCell Date="@date"
-                 ViewModel="@dayViewModel"
+                 ViewModel="@dayCellViewModel"
                  LegendViewModel="@LegendViewModel"
                  OnDateClick="@OnDateClick"/>
     }
@@ -16,7 +13,7 @@
 
 @code {
     [Parameter, EditorRequired]
-    public IReadOnlyDictionary<int, DayCellViewModel> DayCellViewModels { get; set; }
+    public IReadOnlyDictionary<DateOnly, DayCellViewModel> DayCellViewModels { get; set; }
 
     [Parameter, EditorRequired]
     public LegendViewModel LegendViewModel { get; set; } = new();

@@ -10,7 +10,7 @@ public class PlanningViewModel
     
     public SchedulerOverlayViewModel SchedulerOverlayViewModel { get; private init; } = new();
     
-    public Dictionary<int, DayCellViewModel> DayCellViewModels { get; private set; } = new();
+    public Dictionary<DateOnly, DayCellViewModel> DayCellViewModels { get; private set; } = new();
     
     public string ErrorMessage { get; set; } = string.Empty;
 
@@ -29,7 +29,9 @@ public class PlanningViewModel
             .ToLookup(me => me.ShowTime.Day);
         
         DayCellViewModels = Enumerable.Range(1, NavigatorViewModel.DaysInCurrentMonth)
-            .ToDictionary(day => day, day => new DayCellViewModel
+            .ToDictionary(
+                day => new DateOnly(NavigatorViewModel.SelectedYear, NavigatorViewModel.SelectedMonth, day),
+                day => new DayCellViewModel
             {
                 MovieEvents =  movieLookup[day].ToList()
             });
@@ -39,6 +41,9 @@ public class PlanningViewModel
     {
         DayCellViewModels = Enumerable
             .Range(1, NavigatorViewModel.DaysInCurrentMonth)
-            .ToDictionary(day => day, _ => new DayCellViewModel());
+            .ToDictionary(
+                day => new DateOnly(NavigatorViewModel.SelectedYear, NavigatorViewModel.SelectedMonth, day),
+                _ => new DayCellViewModel()
+            );
     }
 }

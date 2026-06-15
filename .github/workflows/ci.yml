@@ -25,7 +25,7 @@ jobs:
       - name: Make release
         run: |
           dotnet restore
-          dotnet publish -c Release -o build
+          dotnet publish ./Howestprime.Backoffice/Howestprime.Backoffice.csproj -c Release -o build
           
       - name: Zip the release
         run: |

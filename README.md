@@ -17,7 +17,7 @@ This repository contains the blazor backoffice for the Howestprime project.
 * **Production environment Repository**: [Howestprime Production Environment](https://github.com/Alexander-Engelrelst/howestprime-infra-prod)
 
 ## Usage
-Since this is a project consisting of multiple repositories, trying to run it is not recommened.
+Since this is a project consisting of multiple repositories, trying to run it is not recommended.
 
 To see the full application in action, please watch the [demo video](https://youtu.be/mCZmW9P8Di4)
 
@@ -25,9 +25,9 @@ If you really wish to run the application yourself, please follow the instructio
 repository](https://github.com/Alexander-Engelrelst/howestprime-infra-test)
 
 ## Personal Contribution
-Only the Howestprime.Backoffice project was mainly written by me. Besides a few extra routes added by me in the 
-ApiClient project the other projects inside the solution were provided by Howest teaching staff.
-
+I primarily developed and maintained the **Howestprime.Backoffice** project. Aside from custom endpoints and routes 
+I implemented within the **ApiClient** project, the remaining boilerplate infrastructure in the solution was provided 
+by Howest teaching staff.
 ## Key Highlights
 * **Custom validation attribute**: A custom validation attribute to ensure movies can only be added 2 years before 
   their release date. [See code](./Howestprime.Backoffice/ViewModels/Attributes/MovieYearRangeAttribute.cs)

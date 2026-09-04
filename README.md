@@ -21,9 +21,6 @@ Since this is a project consisting of multiple repositories, trying to run it is
 
 To see the full application in action, please watch the [demo video](https://youtu.be/mCZmW9P8Di4)
 
-If you really wish to run the application yourself, please follow the instructions in the [test environment 
-repository](https://github.com/Alexander-Engelrelst/howestprime-infra-test)
-
 ## Personal Contribution
 I primarily developed and maintained the **Howestprime.Backoffice** project. Aside from custom endpoints and routes 
 I implemented within the **ApiClient** project, the remaining boilerplate infrastructure in the solution was provided 
